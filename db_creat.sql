@@ -233,22 +233,22 @@ CREATE TABLE mentions (
 	FOREIGN KEY (GID) REFERENCES Game_uploads(Name)
 )
 
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000002, 'Omaha', 'Password', 'Male', '22-AUG-98', '01-SEP-19', 'Developer');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000003, 'Mark', 'TouhouIsBest', 'Male', '23-APR-96', '01-JAN-19', 'Developer');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000004, 'HollySteve', 'WHATTHEHECK', 'Other', '30-OCT-93', '22-JUN-19', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000005, 'ASAP', 'bettergirl', 'Female', '01-JAN-01', '12-MAY-20', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000006, 'Marry', 'abcde', 'Female', '12-FEB-99', '09-MAR-20', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000007, 'Gorini', 'Ra345', 'Male', '17-MAR-00', '01-AUG-20', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000008, 'Rosetti', '1234567Abc', 'Female', '06-JUN-96', '22-JUL-19', 'Developer');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000009, 'Creeber', 'Co43245', 'Other', '17-FEB-98', '11-APR-19', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000010, 'Balnaves', 'Le5625', 'Female', '11-NOV-91', '21-NOV-19', 'Player');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000011, 'Maestrini', 'Le2345', 'Female', '21-JUL-94', '27-FEB-20', 'Developer');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000012, 'Mario', 'SmashBro', 'Male', '03-MAR-93', '11-MAY-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000002, 'Omaha', 'Password', 'Male', '22-AUG-98', '01-SEP-19', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000003, 'Mark', 'TouhouIsBest', 'Male', '23-APR-96', '01-JAN-19', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000004, 'HollySteve', 'WHATTHEHECK', 'Other', '30-OCT-93', '22-JUN-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000005, 'ASAP', 'bettergirl', 'Female', '01-JAN-01', '12-MAY-20', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000006, 'Marry', 'abcde', 'Female', '12-FEB-99', '09-MAR-20', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000007, 'Gorini', 'Ra345', 'Male', '17-MAR-00', '01-AUG-20', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000008, 'Rosetti', '1234567Abc', 'Female', '06-JUN-96', '22-JUL-18', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000009, 'Creeber', 'Co43245', 'Other', '17-FEB-98', '11-APR-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000010, 'Balnaves', 'Le5625', 'Female', '11-NOV-91', '21-NOV-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000011, 'Maestrini', 'Le2345', 'Female', '21-JUL-94', '27-FEB-20', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000012, 'Mario', 'SmashBro', 'Male', '03-MAR-93', '11-MAY-19', 'Player');
 
-INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000002, 2, 12, 33.00);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000002, 2, 5, 47.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000003, 1, 3, 2.00);
-INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000008, 2, 27, 47.30);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000008, 2, 7, 149.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000011, 1, 4, 0.00);
 
 INSERT INTO Player (ID) VALUES (000001);
@@ -260,9 +260,28 @@ INSERT INTO Player (ID) VALUES (000009);
 INSERT INTO Player (ID) VALUES (000010);
 INSERT INTO Player (ID) VALUES (000011);
 
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0200, 000002, 'Run Run Run', 4.2, 0.00, LOAD_FILE('Latlux.png'), '19-SEP-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0201, 000002, 'Ventosanzap', 3.7, 3.00, LOAD_FILE('Ventosanzap.png'),'22-JAN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0202, 000002, 'Vagram', 1.2, 20.00, LOAD_FILE('Vagram.png'), '04-FEB-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0203, 000002, 'Cooky', 3.8, 2.00, LOAD_FILE('Cooky.png'), '07-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 169.9, LOAD_FILE('Holdlamis.png'), '01-JUN-20');
 
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0201, 000003, 'Rim', 3.4, 0.00, LOAD_FILE('Rim.png'), '12-FEB-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0202, 000003, 'Road Map', 3.5, 0.00, LOAD_FILE('Road Map.png'),'21-SEP-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0203, 000003, 'Valkyrie', 4.0, 2.00, LOAD_FILE('Valkyrie.png'), '23-APR-20');
 
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0801, 000008, 'So Far So Good', 2.2, 1.00, LOAD_FILE('So Far So Good.png'), '02-SEP-18');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0802, 000008, 'Hold My Beer', 3.0, 0.00, LOAD_FILE('Hold My Beer.png'), '28-SEP-18');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0803, 000008, 'Dwalf and Dungen', 4.2, 1.00, LOAD_FILE('Dwalf and Dungen.png'), '14-JAN-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0804, 000008, 'Snap Da Bug!', 2.7, 0.00, LOAD_FILE('Snap Da Bug!.png'),'29-MAR-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0805, 000008, 'Vegetation', 1.2, 0.00, LOAD_FILE('Vegetation.png'), '04-APR-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0806, 000008, 'Who That DUDE', 3.8, 2.00, LOAD_FILE('Who That DUDE.png'), '07-DEC-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0807, 000008, 'Underworld', 4.5, 12.5, LOAD_FILE('Underworld.png'), '01-JAN-20');
 
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1101, 000011, 'HELP ME', null, 0.00, LOAD_FILE('HELP ME.png'), '29-FEB-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1101, 000011, 'SUB', null, 3.00, LOAD_FILE('SUB.png'),'12-MAR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1102, 000011, 'IM HUNGRY', 2.5, 20.00, LOAD_FILE('IM HUNGRY.png'), '05-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1103, 000011, 'BYE', null, 2.00, LOAD_FILE('BYE.png'), '05-JUN-20');
 
 
 
