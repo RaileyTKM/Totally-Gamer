@@ -30,7 +30,7 @@ CREATE TABLE UserID (
 	Gender	VARCHAR(6),
 	Birthday	DATE,
 	AccCreation	DATE,
-	role VARCHAR(10)
+	Role VARCHAR(10)
 );
 
 CREATE TABLE Developer (
@@ -233,26 +233,32 @@ CREATE TABLE mentions (
 	FOREIGN KEY (GID) REFERENCES Game_uploads(Name)
 )
 
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000002, 'Omaha', 'Password', 'Male', '22-AUG-98', '01-SEP-19');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000003, 'Mark', 'TouhouIsBest', 'Male', '23-APR-96', '01-JAN-19');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000004, 'HollySteve', 'WHATTHEHECK', 'Other', '30-OCT-93', '22-JUN-19');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000005, 'ASAP', 'bettergirl', 'Female', '01-JAN-01', '12-MAY-20');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000006, 'Marry', 'abcde', 'Female', '12-FEB-99', '09-MAR-20');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000007, 'Gorini', 'Ra345', 'Male', '17-MAR-00', '01-AUG-20');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000008, 'Rosetti', '1234567Abc', 'Female', '06-JUN-96', '22-JUL-19');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000009, 'Creeber', 'Co43245', 'Other', '17-FEB-98', '11-APR-19');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000010, 'Balnaves', 'Le5625', 'Female', '11-NOV-91', '21-NOV-19');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000011, 'Maestrini', 'Le2345', 'Female', '21-JUL-94', '27-FEB-20');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000012, 'Mario', 'SmashBro', 'Male', '03-MAR-93', '11-MAY-19');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000002, 'Omaha', 'Password', 'Male', '22-AUG-98', '01-SEP-19', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000003, 'Mark', 'TouhouIsBest', 'Male', '23-APR-96', '01-JAN-19', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000004, 'HollySteve', 'WHATTHEHECK', 'Other', '30-OCT-93', '22-JUN-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000005, 'ASAP', 'bettergirl', 'Female', '01-JAN-01', '12-MAY-20', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000006, 'Marry', 'abcde', 'Female', '12-FEB-99', '09-MAR-20', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000007, 'Gorini', 'Ra345', 'Male', '17-MAR-00', '01-AUG-20', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000008, 'Rosetti', '1234567Abc', 'Female', '06-JUN-96', '22-JUL-19', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000009, 'Creeber', 'Co43245', 'Other', '17-FEB-98', '11-APR-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000010, 'Balnaves', 'Le5625', 'Female', '11-NOV-91', '21-NOV-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000011, 'Maestrini', 'Le2345', 'Female', '21-JUL-94', '27-FEB-20', 'Developer');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (000012, 'Mario', 'SmashBro', 'Male', '03-MAR-93', '11-MAY-19', 'Player');
 
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000002, 2, 12, 33.00);
-INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000007, 1, 3, 2.00);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000003, 1, 3, 2.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000008, 2, 27, 47.30);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000011, 1, 4, 0.00);
 
 INSERT INTO Player (ID) VALUES (000001);
-INSERT INTO Player (ID) VALUES (000003);
 INSERT INTO Player (ID) VALUES (000004);
+INSERT INTO Player (ID) VALUES (000005);
+INSERT INTO Player (ID) VALUES (000006);
+INSERT INTO Player (ID) VALUES (000007);
+INSERT INTO Player (ID) VALUES (000009);
+INSERT INTO Player (ID) VALUES (000010);
+INSERT INTO Player (ID) VALUES (000011);
 
 
 
