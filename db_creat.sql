@@ -213,11 +213,18 @@ CREATE TABLE mentions (
 	FOREIGN KEY (GID) REFERENCES Game_uploads(Name)
 )
 
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (12, 'Gorini', 'Ra345', 'Male', '2000-03-17', '2020-08-01');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (17, 'Rosetti', '1234567Abc', 'Female', '1996-06-06', '2019-07-22');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (18, 'Creeber', 'Co43245', 'Other', '1998-11-17', '2019-04-11');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (22, 'Balnaves', 'Le5625', 'Female', '1991-11-11', '2019-11-21');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (35, 'Maestrini', 'Le2345', 'Female', '1992-07-21', '2019-11-27');
 
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (12, 2, 12, 33.00);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (17, 1, 3, 2.00);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (18, 2, 27, 47.30);
 
-
-
-
+INSERT INTO Player (ID) VALUES (22);
+INSERT INTO Player (ID) VALUES (35);
 
 
 
