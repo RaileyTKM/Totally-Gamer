@@ -1,10 +1,36 @@
+drop table UserID cascade constraints;
+drop table Developer cascade constraints;
+drop table Player cascade constraints;
+drop table Game_uploads cascade constraints;
+drop table Game_rate cascade constraints;
+drop table Achievement cascade constraints;
+drop table Type cascade constraints;
+drop table Forum_category_creates cascade constraints;
+drop table ForumArticle_posts cascade constraints;
+drop table Follow_up_posts cascade constraints;
+drop table isFriend cascade constraints;
+drop table rates cascade constraints;
+drop table views cascade constraints;
+drop table plays cascade constraints;
+drop table GameRecord_recordedTo cascade constraints;
+drop table Purchases_profits_records cascade constraints;
+drop table Purchases_profits_detail cascade constraints;
+drop table achieves cascade constraints;
+drop table associates cascade constraints;
+drop table Comment_writesTo cascade constraints;
+drop table replies cascade constraints;
+drop table favorites cascade constraints;
+drop table isOf cascade constraints;
+drop table mentions cascade constraints;
+
 CREATE TABLE UserID (
 	ID		INT		 PRIMARY KEY,
 	Nickname	VARCHAR(30) NOT NULL UNIQUE,
 	Password	VARCHAR(30),
 	Gender	VARCHAR(6),
 	Birthday	DATE,
-	AccCreation	DATE
+	AccCreation	DATE,
+	role VARCHAR(10)
 );
 
 CREATE TABLE Developer (
@@ -12,12 +38,12 @@ CREATE TABLE Developer (
 	YearsOfExp	INT,
 	TPurchase	INT,
 	TProfit		REAL,
-FOREIGN KEY (ID) REFERENCES User (ID)
+FOREIGN KEY (ID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE Player (
 	ID	INT	PRIMARY KEY ,
-FOREIGN KEY (ID) REFERENCES User (ID)
+FOREIGN KEY (ID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE Game_uploads (
@@ -39,7 +65,7 @@ CREATE TABLE Game_rate (
 CREATE TABLE Achievement (
 	AID	VARCHAR(10)	PRIMARY KEY,
 	Name	VARCHAR(20)	NOT NULL,
-	Badge	BLOB 
+	Badge	BLOB
 );
 
 CREATE TABLE Type (
@@ -52,7 +78,7 @@ CREATE TABLE Forum_category_creates (
 	CreatorID	INT			NOT NULL,
 	CreateDate	DATE,
 	FOREIGN KEY (Category) REFERENCES Type (Name),
-	FOREIGN KEY (CreatorID) REFERENCES User (ID)
+	FOREIGN KEY (CreatorID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE ForumArticle_posts (
@@ -60,36 +86,35 @@ CREATE TABLE ForumArticle_posts (
 	Forum		VARCHAR(60)	NOT NULL,
 	AuthorID	INT			NOT NULL,
 	Title		VARCHAR(60)	NOT NULL,
-	Date		DATE,
-	Time		TIME,
+	Time		TIMESTAMP(2),
 	Views		INT,
 	Content	VARCHAR(2000)	NOT NULL,
 	FOREIGN KEY (Forum) REFERENCES Forum_category_creates (Name),
-	FOREIGN KEY (AuthorID) REFERENCES User (ID)
+	FOREIGN KEY (AuthorID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE Follow_up_posts (
 	ArtID		VARCHAR(10),
 	FID		VARCHAR(10),
 	AuthorID	INT			NOT NULL,
-	Date		DATE,
-	Time		TIME,
+	Time		TIMESTAMP(2),
 	Content	VARCHAR(2000)	NOT NULL,
 	PRIMARY KEY (ArtID, FID),
 	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts(ArtID),
-	FOREIGN KEY (AuthorID) REFERENCES User (ID)
+	FOREIGN KEY (AuthorID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE isFriend (
 	User1ID	INT,
 	User2ID	INT,
 	PRIMARY KEY (User1ID, User2ID),
-	FOREIGN KEY (User1ID,User2ID) REFERENCES User (ID)
+	FOREIGN KEY (User1ID) REFERENCES UserID (ID),
+	FOREIGN KEY (User2ID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE rates (
 	PlayerID	INT,
-	GID		VARCHAR(8),
+	GID		INT,
 	Rating		INT,
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player (ID),
@@ -98,18 +123,17 @@ CREATE TABLE rates (
 
 CREATE TABLE views (
 	PlayerID	INT,
-	GID		VARCHAR(8),
-	Date		DATE,
-	Time		TIME,
-	PRIMARY KEY (PlayerID, GID, Date, Time),
+	GID		INT,
+	Time		TIMESTAMP(2),
+	PRIMARY KEY (PlayerID, GID, Time),
 FOREIGN KEY (PlayerID) REFERENCES Player(ID),
 FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
 );
 
 CREATE TABLE plays (
 	PlayerID		INT,
-	GID			VARCHAR(8),
-	AccumPlayTime	TIME,
+	GID			INT,
+	AccumPlayTime	INT,
 	CurrStage		INT,
 	AccumScore		INT,
 	PRIMARY KEY (PlayerID, GID),
@@ -119,30 +143,28 @@ CREATE TABLE plays (
 
 CREATE TABLE GameRecord_recordedTo (
 	PlayerID	INT,
-	GID		VARCHAR(8),
-	StartDate	DATE,
-	StartTime	TIME,
-	EndDate	DATE,
-	EndTime	TIME,
+	GID		INT,
+	Start_Time		TIMESTAMP(2),
+	End_Time		TIMESTAMP(2),
 	Score		INT,
-	PRIMARY KEY (PlayerID, GID, StartDate, StartTime),
+	PRIMARY KEY (PlayerID, GID, Start_Time),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
 	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
 );
 
-CREATE TABLE PP1 (
-	GID		VARCHAR(8)	PRIMARY KEY,
-	DevID		INT,
-	AmountProfit	REAL,
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID),
-	FOREIGN KEY (DevID) REFERENCES Developer (ID),
-	FOREIGN KEY (AmountProfit) REFERENCES Game_uploads (Price)
-);
+-- CREATE TABLE Purchases_profits_records (
+-- 	GID		INT	PRIMARY KEY,
+-- 	DevID		INT,
+-- 	AmountProfit	REAL,
+-- 	FOREIGN KEY (GID) REFERENCES Game_uploads(GID),
+-- 	FOREIGN KEY (DevID) REFERENCES Developer (ID),
+-- 	FOREIGN KEY (AmountProfit) REFERENCES Game_uploads (Price)
+-- );
 
-CREATE TABLE PP2 (
+CREATE TABLE Purchases_profits_detail (
 	PlayerID	INT,
-	GID		VARCHAR(8),
-	Date		DATE,
+	GID		INT,
+	Purchase_Date		DATE,
 	PayMethod	VARCHAR(10),
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
@@ -152,14 +174,14 @@ CREATE TABLE PP2 (
 CREATE TABLE achieves (
 	PlayerID	INT,
 	AID		VARCHAR(10),
-	Date		DATE,
+	Achieve_Date		DATE,
 	PRIMARY KEY (PlayerID, AID),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
 	FOREIGN KEY (AID) REFERENCES Achievement(AID)
 );
 
 CREATE TABLE associates (
-	GID	VARCHAR(8),
+	GID	INT,
 	AID	VARCHAR(10),
 	PRIMARY KEY (GID, AID),
 	FOREIGN KEY (GID) REFERENCES  Game_uploads (GID),
@@ -168,26 +190,25 @@ CREATE TABLE associates (
 
 CREATE TABLE Comment_writesTo (
 	CID		VARCHAR(20) PRIMARY KEY,
-	PlayerID	INT		 NOT NULL DEFAULT 0,
-	GID		VARCHAR(8)	 NOT NULL,
+	PlayerID	INT		DEFAULT 0,
+	GID		INT	 NOT NULL,
 	Content	VARCHAR(2000)	NOT NULL,
-	Date		DATE,
-	Time		TIME,
-	FOREIGN KEY (GID) 
+	Time		TIMESTAMP(2),
+	FOREIGN KEY (GID)
 		REFERENCES Game_uploads (GID)
 		ON DELETE CASCADE,
-	FOREIGN KEY (PlayerID) 
+	FOREIGN KEY (PlayerID)
 		REFERENCES Player(ID)
-		ON DELETE SET DEFAULT
+		ON DELETE SET NULL
 );
 
 CREATE TABLE replies (
 	UserID		INT,
-	GID		VARCHAR(8),
+	GID		INT,
 	Content	VARCHAR(2000),
 	PRIMARY KEY (UserID, GID),
 	FOREIGN KEY (GID) REFERENCES Game_uploads(GID),
-	FOREIGN KEY (UserID) REFERENCES User (ID)
+	FOREIGN KEY (UserID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE favorites (
@@ -195,30 +216,29 @@ CREATE TABLE favorites (
 	Type		VARCHAR(20),
 	PRIMARY KEY (UserID, Type),
 	FOREIGN KEY (Type) REFERENCES Type (Name),
-	FOREIGN KEY (UserID) REFERENCES User (ID)
+	FOREIGN KEY (UserID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE isOf (
-	GID		VARCHAR(8),
+	GID		INT,
 	Type		VARCHAR(20),
 	PRIMARY KEY (GID, Type),
-	FOREIGN KEY (Type) REFERENCES Type (Name),
-	FOREIGN KEY (UserID) REFERENCES User (ID)
+	FOREIGN KEY (Type) REFERENCES Type (Name)
 );
 
 CREATE TABLE mentions (
 	ArtID		VARCHAR(10),
-	GID		VARCHAR(8),
+	GID		INT,
 	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts (Name),
 	FOREIGN KEY (GID) REFERENCES Game_uploads(Name)
 )
 
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (12, 'Gorini', 'Ra345', 'Male', '2000-03-17', '2020-08-01');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (17, 'Rosetti', '1234567Abc', 'Female', '1996-06-06', '2019-07-22');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (18, 'Creeber', 'Co43245', 'Other', '1998-11-17', '2019-04-11');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (22, 'Balnaves', 'Le5625', 'Female', '1991-11-11', '2019-11-21');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (35, 'Maestrini', 'Le2345', 'Female', '1992-07-21', '2019-11-27');
-INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation) VALUES (36, 'Marry', 'abcde', 'Male', '1999-03-03', '2019-11-27');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation,role) VALUES (12, 'Gorini', 'Ra345', 'Male', '16-Mar-2000', '01-Aug-2000','DEVELOPER');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation,role) VALUES (17, 'Rosetti', '1234567Abc', 'Female', '06-Jun-1996', '22-Jul-2019','DEVELOPER');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation,role) VALUES (18, 'Creeber', 'Co43245', 'Other', '17-Nov-1998', '11-Apr-2019','DEVELOPER');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation,role) VALUES (22, 'Balnaves', 'Le5625', 'Female', '11-Nov-1991', '21-Nov-2019','PLAYER');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation,role) VALUES (35, 'Maestrini', 'Le2345', 'Female', '21-Jul-1992', '27-Nov-2019','PLAYER');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation,role) VALUES (36, 'Marry', 'abcde', 'Male', '03-Mar-1999', '28-Nov-2019','PLAYER');
 
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (12, 2, 12, 33.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (17, 1, 3, 2.00);
@@ -227,13 +247,4 @@ INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (18, 2, 27, 47
 INSERT INTO Player (ID) VALUES (22);
 INSERT INTO Player (ID) VALUES (35);
 INSERT INTO Player (ID) VALUES (36);
-
-
-
-
-
-
-
-
-
 
