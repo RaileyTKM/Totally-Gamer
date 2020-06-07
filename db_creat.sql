@@ -133,7 +133,7 @@ FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
 CREATE TABLE plays (
 	PlayerID		INT,
 	GID				INT,
-	AccumPlayTime	REAL,
+	AccumPlayTime	INT,
 	CurrStage		INT,
 	AccumScore		INT,
 	PRIMARY KEY (PlayerID, GID),
@@ -163,7 +163,7 @@ CREATE TABLE GameRecord_recordedTo (
 
 CREATE TABLE Purchases_profits_detail (
 	PlayerID	INT,
-	GID		INT,
+	GID			INT,
 	Purchase_Date		DATE,
 	PayMethod	VARCHAR(10),
 	PRIMARY KEY (PlayerID, GID),
@@ -284,6 +284,7 @@ INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VA
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1102, 000011, 'IM HUNGRY', 2.0, 0.00, LOAD_FILE('IM_HUNGRY.png'), '05-APR-20');
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1103, 000011, 'BYE', null, 2.00, LOAD_FILE('BYE.png'), '05-JUN-20');
 
+--Matching all ratings to respective ranks
 INSERT INTO Game_rate (Rating, Rank) VALUES (5.0,'Excellent');
 INSERT INTO Game_rate (Rating, Rank) VALUES (4.9,'Excellent');
 INSERT INTO Game_rate (Rating, Rank) VALUES (4.8,'Excellent');
@@ -385,9 +386,44 @@ INSERT INTO views (PlayerID, GID, Time) VALUES (000005, 0802, '14-JAN-20 06:35:0
 INSERT INTO views (PlayerID, GID, Time) VALUES (000012, 0302, '04-MAY-20 01:35:25');
 INSERT INTO views (PlayerID, GID, Time) VALUES (000001, 1102, '11-MAY-20 13:21:24');
 
-INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000004, 0805, 17.13333, 1, 26);
-INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0200, 113.4, 13, 0);
-INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0802, 4.56, 5, 430);
-INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000012, 0302, 6.788, 6, 356);
-INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000001, 1102, 1.1, 1, 226);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000004, 0805, 17, 1, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0200, 13, 4, 0);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0802, 4, 5, 430);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000012, 0302, 6, 6, 356);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000001, 1102, 1, 1, 26);
 
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, '31-DEC-19 21:08:42',  '31-DEC-19 22:22:00', 1);--1
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, '02-JAN-20 13:25:33',  '02-JAN-20 23:18:42', 20);--10
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, '02-JAN-20 23:56:24',  '03-JAN-20 06:18:42', 5);--6
+
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, '13-DEC-19 21:05:47', '14-DEC-19 02:03:44', 0);--5
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, '14-DEC-19 14:33:28', '14-DEC-19 22:45:01', 0);--8
+
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0802, '14-JAN-20 18:35:07', '14-JAN-20 22:49:14', 430);--4
+
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000012, 0302, '04-MAY-20 01:41:20', '04-MAY-20 07:58:59', 356);--6
+
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000001, 1102, '11-MAY-20 13:24:11', '11-MAY-20 14:30:18', 26);--1
+
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000004, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0802, '14-JAN-20', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0302, '04-MAY-20', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 1102, '11-MAY-20', 'DebitCard');
+
+INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000002, '1a1', '19-SEP-19');
+INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000003, '1a1', '12-FEB-19');
+INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000008, '1a1', '02-SEP-18');
+INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000011, '1a1', '29-FEB-20');
+INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000012, '2s1', '04-MAY-20');
+
+INSERT INTO associates (GID, AID) VALUES (0200, '3a2');--Speed Runner
+INSERT INTO associates (GID, AID) VALUES (0302, '2s1');--all kill
+INSERT INTO associates (GID, AID) VALUES (0301, '7f4');--king of the land
+INSERT INTO associates (GID, AID) VALUES (1101, '84r');--FOB
+
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('efe1b189-ad63-4e3e', 000004, 0805,'It''s so bad that it''s good', '03-JAN-20 06:20:23');
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('990a0bcf-149b-43c4', 000005, 0200,'Nice as someone''s first game. I wish that the challenges are easier tho. ', '14-DEC-19 22:56:31');
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('4a9a6fc0-71bb-4621', 000005, 0802,'Nice chilling game. There is a bug at the beginning of stage 2 that you can''t drink after refilling. ', '14-JAN-20 22:49:14');
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('d1d93e17-fc53-49ad', 000012, 0302,'Really surprised. This game has its own flavor while following the standard action game model, thanks to the amazing dialog design. Enjoyed it. I hope it has a sequal. ', '04-MAY-20 08:00:52');
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('c8a91850-dcc5-4751', 000001, 1102,'SUB DUDE 2 POINTS 4 U', '11-MAY-20 14:31:44');
