@@ -13,7 +13,7 @@ drop table rates cascade constraints;
 drop table views cascade constraints;
 drop table plays cascade constraints;
 drop table GameRecord_recordedTo cascade constraints;
-drop table Purchases_profits_records cascade constraints;
+--drop table Purchases_profits_records cascade constraints;
 drop table Purchases_profits_detail cascade constraints;
 drop table achieves cascade constraints;
 drop table associates cascade constraints;
@@ -52,7 +52,7 @@ CREATE TABLE Game_uploads (
 	Name 		VARCHAR(40) 	NOT NULL 	UNIQUE,
 	Rating		DECIMAL(2,1),
 	Price		DECIMAL(10,2),
-	Cover		BLOB,
+	/* Cover		BLOB, */
 	UploadDate	DATE,
 FOREIGN KEY (DevID) REFERENCES Developer (ID)
 );
@@ -64,8 +64,8 @@ CREATE TABLE Game_rate (
 
 CREATE TABLE Achievement (
 	AID	VARCHAR(10)	PRIMARY KEY,
-	Name	VARCHAR(20)	NOT NULL,
-	Badge	BLOB
+	Name	VARCHAR(20)	NOT NULL--,
+	/* Badge	BLOB */
 );
 
 CREATE TABLE Type (
@@ -172,11 +172,11 @@ CREATE TABLE Purchases_profits_detail (
 );
 
 CREATE TABLE achieves (
-	PlayerID	INT,
+	UserID	INT,
 	AID		VARCHAR(10),
 	Achieve_Date		DATE,
-	PRIMARY KEY (PlayerID, AID),
-	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
+	PRIMARY KEY (UserID, AID),
+	FOREIGN KEY (UserID) REFERENCES UserID(ID),
 	FOREIGN KEY (AID) REFERENCES Achievement(AID)
 );
 
@@ -229,9 +229,9 @@ CREATE TABLE isOf (
 CREATE TABLE mentions (
 	ArtID		VARCHAR(10),
 	GID		INT,
-	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts (Name),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(Name)
-)
+	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts (ArtID),
+	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
+);
 
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18', 'Player');
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000002, 'Omaha', 'Password', 'Male', '22-AUG-98', '01-SEP-19', 'Developer');
@@ -258,31 +258,31 @@ INSERT INTO Player (ID) VALUES (000006);
 INSERT INTO Player (ID) VALUES (000007);
 INSERT INTO Player (ID) VALUES (000009);
 INSERT INTO Player (ID) VALUES (000010);
-INSERT INTO Player (ID) VALUES (000011);
+INSERT INTO Player (ID) VALUES (000012);
 
 -- Game tuples that belongs to the 4 developers
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0200, 000002, 'Run Run Run', 4.2, 0.00, LOAD_FILE('Run_Run_Run.png'), '19-SEP-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0201, 000002, 'Ventosanzap', 3.7, 3.00, LOAD_FILE('Ventosanzap.png'),'22-JAN-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0202, 000002, 'Vagram', 1.2, 20.00, LOAD_FILE('Vagram.png'), '04-FEB-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0203, 000002, 'Cooky', 3.8, 2.00, LOAD_FILE('Cooky.png'), '07-APR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 169.9, LOAD_FILE('Holdlamis.png'), '01-JUN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0200, 000002, 'Run Run Run', 4.2, 0.00, /* LOAD_FILE('Run_Run_Run.png'), */ '19-SEP-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0201, 000002, 'Ventosanzap', 3.7, 3.00, /* LOAD_FILE('Ventosanzap.png'), */'22-JAN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0202, 000002, 'Vagram', 1.2, 20.00, /* LOAD_FILE('Vagram.png'), */ '04-FEB-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0203, 000002, 'Cooky', 3.8, 2.00, /* LOAD_FILE('Cooky.png'), */ '07-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 169.9, /* LOAD_FILE('Holdlamis.png'), */ '01-JUN-20');
 
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0300, 000003, 'Rim', null, 0.00, LOAD_FILE('Rim.png'), '12-FEB-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0301, 000003, 'Road Map', 3.5, 0.00, LOAD_FILE('Road_Map.png'),'21-SEP-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0302, 000003, 'Valkyrie', 4.0, 2.00, LOAD_FILE('Valkyrie.png'), '23-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price,/*  Cover,  */UploadDate) VALUES (0300, 000003, 'Rim', null, 0.00, /* LOAD_FILE('Rim.png'), */ '12-FEB-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0301, 000003, 'Road Map', 3.5, 0.00, /* LOAD_FILE('Road_Map.png'), */'21-SEP-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0302, 000003, 'Valkyrie', 4.0, 2.00, /* LOAD_FILE('Valkyrie.png'), */ '23-APR-20');
 
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0801, 000008, 'So Far So Good', null, 1.00, LOAD_FILE('So_Far_So Good.png'), '02-SEP-18');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0802, 000008, 'Hold My Beer', 3.0, 0.00, LOAD_FILE('Hold_My_Beer.png'), '28-SEP-18');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0803, 000008, 'Dwalf and Dungen', 4.0, 1.00, LOAD_FILE('Dwalf_and_Dungen.png'), '14-JAN-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0804, 000008, 'Snap Da Bug!', 2.7, 0.00, LOAD_FILE('Snap_Da_Bug.png'),'29-MAR-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0805, 000008, 'Vegetation', 1.2, 0.00, LOAD_FILE('Vegetation.png'), '04-APR-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0806, 000008, 'Who That DUDE', 3.8, 2.00, LOAD_FILE('Who_That_DUDE.png'), '07-DEC-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (0807, 000008, 'Underworld', 4.5, 12.5, LOAD_FILE('Underworld.png'), '01-JAN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0801, 000008, 'So Far So Good', null, 1.00, /* LOAD_FILE('So_Far_So Good.png'), */ '02-SEP-18');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0802, 000008, 'Hold My Beer', 3.0, 0.00, /* LOAD_FILE('Hold_My_Beer.png'), */ '28-SEP-18');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0803, 000008, 'Dwalf and Dungen', 4.0, 1.00, /* LOAD_FILE('Dwalf_and_Dungen.png'), */ '14-JAN-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0804, 000008, 'Snap Da Bug!', 2.7, 0.00, /* LOAD_FILE('Snap_Da_Bug.png'), */'29-MAR-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0805, 000008, 'Vegetation', 1.2, 0.00, /* LOAD_FILE('Vegetation.png'), */ '04-APR-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0806, 000008, 'Who That DUDE', 3.8, 2.00, /* LOAD_FILE('Who_That_DUDE.png'), */ '07-DEC-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0807, 000008, 'Underworld', 4.5, 12.5, /* LOAD_FILE('Underworld.png'), */ '01-JAN-20');
 
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1100, 000011, 'HELP ME', null, 0.00, LOAD_FILE('HELP_ME.png'), '29-FEB-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1101, 000011, 'SUB', null, 3.00, LOAD_FILE('SUB.png'),'12-MAR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1102, 000011, 'IM HUNGRY', 2.0, 0.00, LOAD_FILE('IM_HUNGRY.png'), '05-APR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, Cover, UploadDate) VALUES (1103, 000011, 'BYE', null, 2.00, LOAD_FILE('BYE.png'), '05-JUN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1100, 000011, 'HELP ME', null, 0.00, /* LOAD_FILE('HELP_ME.png'), */ '29-FEB-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1101, 000011, 'SUB', null, 3.00, /* LOAD_FILE('SUB.png'), */'12-MAR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1102, 000011, 'IM HUNGRY', 2.0, 0.00, /* LOAD_FILE('IM_HUNGRY.png'), */ '05-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1103, 000011, 'BYE', null, 2.00, /* LOAD_FILE('BYE.png'), */ '05-JUN-20');
 
 --Matching all ratings to respective ranks
 INSERT INTO Game_rate (Rating, Rank) VALUES (5.0,'Excellent');
@@ -327,11 +327,11 @@ INSERT INTO Game_rate (Rating, Rank) VALUES (1.2,'Poor');
 INSERT INTO Game_rate (Rating, Rank) VALUES (1.1,'Poor');
 INSERT INTO Game_rate (Rating, Rank) VALUES (1.0,'Poor');
 
-INSERT INTO Achievement (AID, Name, Badge) VALUES ('1a1','First Game!',LOAD_FILE('First_Game.png'));
-INSERT INTO Achievement (AID, Name, Badge) VALUES ('3a2','Speed Runner',LOAD_FILE('Speed_Runner.png'));
-INSERT INTO Achievement (AID, Name, Badge) VALUES ('2s1','ALL KILL',LOAD_FILE('ALL_KILL.png'));
-INSERT INTO Achievement (AID, Name, Badge) VALUES ('7f4','King of the Land',LOAD_FILE('King_of_the_Land.png'));
-INSERT INTO Achievement (AID, Name, Badge) VALUES ('84r','FOB',LOAD_FILE('FOB.png'));
+INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('1a1','First Game!'/* ,LOAD_FILE('First_Game.png') */);
+INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('3a2','Speed Runner'/* ,LOAD_FILE('Speed_Runner.png') */);
+INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('2s1','ALL KILL'/* ,LOAD_FILE('ALL_KILL.png') */);
+INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('7f4','King of the Land'/* ,LOAD_FILE('King_of_the_Land.png') */);
+INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('84r','FOB'/* ,LOAD_FILE('FOB.png') */);
 
 INSERT INTO Type (Name) VALUES ('Action');
 INSERT INTO Type (Name) VALUES ('RPG');
@@ -349,23 +349,23 @@ INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALU
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('Jessica fanclub', 'Visual Novel', 000009, '20-FEB-20');
 INSERT INTO Forum_category_creates  (Name, Category ,CreatorID, CreateDate) VALUES ('Majo No Ie', 'RPG', 000008, '18-DEC-19');
 
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('a100z567', 'FIFA is Da BEST', 000004, 'Anyone having the same bug?', '04-JAN-20 23:02:34', 21, 
-	'This notification keeps popping up after the welcome screen and I can''t login the game'+CHAR(13)+CHAR(10)+'"ERROR 0034 Configuration Missmatch 27688doDFy879"');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('diqw78f', 'Jessica fanclub', 000007, 'Amazing fanart found on Twitter', '03-FEB-20 16:33:04', 68, 
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('a100z567', 'FIFA is Da BEST', 000004, 'Anyone having the same bug?', to_date('2020-01-04:23:02:34','YYYY-MM-DD:HH24:MI:SS'), 21, 
+	'This notification keeps popping up after the welcome screen and I can''t login the game: "ERROR 0034 Configuration Missmatch 27688doDFy879"');
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('diqw78f', 'Jessica fanclub', 000007, 'Amazing fanart found on Twitter', to_date('2020-03-03:16:33:04','YYYY-MM-DD:HH24:MI:SS'), 68, 
 	'Chekcout this artist @kiminodaikon on Twitter. His work is so sickkkkk');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('f8hf92wd', 'Is Ubisoft bankrupt yet', 000078, 'My thoughts on the new AC update', '23-JAN-20', '00:18:20', 5, 'Blablabla…');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('xcvhhy93', 'FIFA is Da BEST', 000002, 'The FULLEST character analysis ever', '05-DEC-19 09:20:00', 2334, 'Blablabla…');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('987dshkjg', 'Majo No Ie', 000010, 'UWU Happy new year peasants', '01-JAN-20 00:11:39', 12, 
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('f8hf92wd', 'Is Ubisoft bankrupt yet', 000008, 'My thoughts on the new AC update', to_date('2020-01-23:00:18:20','YYYY-MM-DD:HH24:MI:SS'), 5, 'Blablabla…');
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('xcvhhy93', 'FIFA is Da BEST', 000002, 'The FULLEST character analysis ever', to_date('2019-12-05:09:20:00','YYYY-MM-DD:HH24:MI:SS'), 2334, 'Blablabla…');
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('987dshkjg', 'Majo No Ie', 000010, 'UWU Happy new year peasants', to_date('2020-01-01:00:11:39','YYYY-MM-DD:HH24:MI:SS'), 12, 
 	'Whassup just checking on yall guys. Happy new year folks');
 
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567','f45j', 000002, '05-JAN-20 00:06:29',
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567','f45j', 000002, to_date('2020-01-05:00:06:29','YYYY-MM-DD:HH24:MI:SS'),
 	'Many people have been having the same bug recently, and EA said they are working on this. It is likely that they will release a patch by today. ');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567', 'd78', 000004, '05-JAN-20 00:08:02', 
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567', 'd78', 000004, to_date('2020-01-05:00:08:02','YYYY-MM-DD:HH24:MI:SS'), 
 	'WTH alright. Not surprised cuz it''s EA man. ');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('987dshkjg', 's45b', 000008, '01-JAN-20 01:11:39','Y u so fast HUH?');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '6823', 000003, '07-JAN-20 20:09:40',
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('987dshkjg', 's45b', 000008, to_date('2020-01-01:01:11:39','YYYY-MM-DD:HH24:MI:SS'),'Y u so fast HUH?');
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '6823', 000003, to_date('2020-01-07:20:09:40','YYYY-MM-DD:HH24:MI:SS'),
 	'Not quite sure about point 2 anymore after this update tho. I think they changed it all up. ');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '241231' , 000002, '07-JAN-20 22:20:17',
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '241231' , 000002, to_date('2020-01-07:22:20:17','YYYY-MM-DD:HH24:MI:SS'),
 	'Yep that''s right. Trying to figure out exactly what they have done so that I can update this post real quick');
 
 INSERT INTO isFriend (User1ID, User2ID) VALUES (000001, 000002);
@@ -380,11 +380,11 @@ INSERT INTO rates (PlayerID, GID, Rating) VALUES (000005, 0802, 3);
 INSERT INTO rates (PlayerID, GID, Rating) VALUES (000012, 0302, 4);
 INSERT INTO rates (PlayerID, GID, Rating) VALUES (000001, 1102, 2);
 
-INSERT INTO views (PlayerID, GID, Time) VALUES (000004, 0805, '31-DEC-19 19:06:40');
-INSERT INTO views (PlayerID, GID, Time) VALUES (000005, 0200, '13-DEC-19 20:24:36');
-INSERT INTO views (PlayerID, GID, Time) VALUES (000005, 0802, '14-JAN-20 06:35:07');
-INSERT INTO views (PlayerID, GID, Time) VALUES (000012, 0302, '04-MAY-20 01:35:25');
-INSERT INTO views (PlayerID, GID, Time) VALUES (000001, 1102, '11-MAY-20 13:21:24');
+INSERT INTO views (PlayerID, GID, Time) VALUES (000004, 0805, to_date('2019-12-31:19:06:40','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO views (PlayerID, GID, Time) VALUES (000005, 0200, to_date('2019-12-13:20:24:36','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO views (PlayerID, GID, Time) VALUES (000005, 0802, to_date('2020-01-14:06:35:07','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO views (PlayerID, GID, Time) VALUES (000012, 0302, to_date('2020-05-04:01:35:25','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO views (PlayerID, GID, Time) VALUES (000001, 1102, to_date('2020-05-11:13:21:24','YYYY-MM-DD:HH24:MI:SS'));
 
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000004, 0805, 17, 1, 26);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0200, 13, 4, 0);
@@ -392,18 +392,18 @@ INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000012, 0302, 6, 6, 356);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000001, 1102, 1, 1, 26);
 
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, '31-DEC-19 21:08:42',  '31-DEC-19 22:22:00', 1);--1
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, '02-JAN-20 13:25:33',  '02-JAN-20 23:18:42', 20);--10
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, '02-JAN-20 23:56:24',  '03-JAN-20 06:18:42', 5);--6
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, to_date('2019-12-31:21:08:42','YYYY-MM-DD:HH24:MI:SS'),  to_date('2019-12-31:22:22:00','YYYY-MM-DD:HH24:MI:SS'), 1);--1
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, to_date('2020-01-02:13:25:33','YYYY-MM-DD:HH24:MI:SS'),  to_date('2020-01-02:23:18:42','YYYY-MM-DD:HH24:MI:SS'), 20);--10
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, to_date('2020-01-02:23:56:24','YYYY-MM-DD:HH24:MI:SS'),  to_date('2020-01-02:06:18:42','YYYY-MM-DD:HH24:MI:SS'), 5);--6
 
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, '13-DEC-19 21:05:47', '14-DEC-19 02:03:44', 0);--5
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, '14-DEC-19 14:33:28', '14-DEC-19 22:45:01', 0);--8
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, to_date('2019-12-13:21:05:47','YYYY-MM-DD:HH24:MI:SS'), to_date('2019-12-13:02:03:44','YYYY-MM-DD:HH24:MI:SS'), 0);--5
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, to_date('2019-12-14:14:33:28','YYYY-MM-DD:HH24:MI:SS'), to_date('2019-12-14:22:45:01','YYYY-MM-DD:HH24:MI:SS'), 0);--8
 
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0802, '14-JAN-20 18:35:07', '14-JAN-20 22:49:14', 430);--4
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0802, to_date('2020-01-14:18:35:07','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-01-14:22:49:14','YYYY-MM-DD:HH24:MI:SS'), 430);--4
 
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000012, 0302, '04-MAY-20 01:41:20', '04-MAY-20 07:58:59', 356);--6
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000012, 0302, to_date('2020-05-04:01:41:20','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-04:07:58:59','YYYY-MM-DD:HH24:MI:SS'), 356);--6
 
-INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000001, 1102, '11-MAY-20 13:24:11', '11-MAY-20 14:30:18', 26);--1
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000001, 1102, to_date('2020-05-11:13:24:11','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-11:14:30:18','YYYY-MM-DD:HH24:MI:SS'), 26);--1
 
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000004, 0805, '31-DEC-19', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0200, '13-DEC-19', 'PayPal');
@@ -411,19 +411,24 @@ INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) V
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0302, '04-MAY-20', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 1102, '11-MAY-20', 'DebitCard');
 
-INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000002, '1a1', '19-SEP-19');
-INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000003, '1a1', '12-FEB-19');
-INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000008, '1a1', '02-SEP-18');
-INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000011, '1a1', '29-FEB-20');
-INSERT INTO achieves (PlayerID, AID, Achieve_Date) VALUES (000012, '2s1', '04-MAY-20');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000002, '1a1', '19-SEP-19');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000003, '1a1', '12-FEB-19');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000008, '1a1', '02-SEP-18');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000011, '1a1', '29-FEB-20');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000012, '2s1', '04-MAY-20');
 
 INSERT INTO associates (GID, AID) VALUES (0200, '3a2');--Speed Runner
 INSERT INTO associates (GID, AID) VALUES (0302, '2s1');--all kill
 INSERT INTO associates (GID, AID) VALUES (0301, '7f4');--king of the land
 INSERT INTO associates (GID, AID) VALUES (1101, '84r');--FOB
 
-INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('efe1b189-ad63-4e3e', 000004, 0805,'It''s so bad that it''s good', '03-JAN-20 06:20:23');
-INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('990a0bcf-149b-43c4', 000005, 0200,'Nice as someone''s first game. I wish that the challenges are easier tho. ', '14-DEC-19 22:56:31');
-INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('4a9a6fc0-71bb-4621', 000005, 0802,'Nice chilling game. There is a bug at the beginning of stage 2 that you can''t drink after refilling. ', '14-JAN-20 22:49:14');
-INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('d1d93e17-fc53-49ad', 000012, 0302,'Really surprised. This game has its own flavor while following the standard action game model, thanks to the amazing dialog design. Enjoyed it. I hope it has a sequal. ', '04-MAY-20 08:00:52');
-INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('c8a91850-dcc5-4751', 000001, 1102,'SUB DUDE 2 POINTS 4 U', '11-MAY-20 14:31:44');
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('efe1b189-ad63-4e3e', 000004, 0805,
+	'It''s so bad that it''s good', to_date('2020-01-03:06:20:23','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('990a0bcf-149b-43c4', 000005, 0200,
+	'Nice as someone''s first game. I wish that the challenges are easier tho. ', to_date('2019-12-14:22:56:31','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('4a9a6fc0-71bb-4621', 000005, 0802,
+	'Nice chilling game. There is a bug at the beginning of stage 2 that you can''t drink after refilling. ', to_date('2020-01-14:22:49:14','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('d1d93e17-fc53-49ad', 000012, 0302,
+	'I was really surprised by how much I enjoyed it. This game has its own flavor while following the standard action game model, thanks to the amazing dialog design. I hope it has a sequal. ', to_date('2020-05-04:08:00:52','YYYY-MM-DD:HH24:MI:SS'));
+INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('c8a91850-dcc5-4751', 000001, 1102,
+	'SUB DUDE 2 POINTS 4 U', to_date('2020-05-11:14:31:44','YYYY-MM-DD:HH24:MI:SS'));
