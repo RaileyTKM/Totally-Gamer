@@ -96,5 +96,13 @@
 </nav>
 <div class="header">Welcome to</div>
 <div class="header">Totally Gamer</div>
+<?php
+	//extract userid from login page
+    session_save_path("/tmp");
+	session_start();
+	echo "Hello world!<br>";
+	echo $_SESSION['userid']; // green
+
+    ?>
 </body>
 </html>
