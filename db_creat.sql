@@ -204,7 +204,8 @@ CREATE TABLE Comment_writesTo (
 
 CREATE TABLE replies (
 	UserID		INT,
-	GID		INT,
+	GID			INT,
+	Time		TIMESTAMP(2),
 	Content	VARCHAR(2000),
 	PRIMARY KEY (UserID, GID),
 	FOREIGN KEY (GID) REFERENCES Game_uploads(GID),
@@ -265,7 +266,7 @@ INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDa
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0201, 000002, 'Ventosanzap', 3.7, 3.00, /* LOAD_FILE('Ventosanzap.png'), */'22-JAN-20');
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0202, 000002, 'Vagram', 1.2, 20.00, /* LOAD_FILE('Vagram.png'), */ '04-FEB-20');
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0203, 000002, 'Cooky', 3.8, 2.00, /* LOAD_FILE('Cooky.png'), */ '07-APR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 169.9, /* LOAD_FILE('Holdlamis.png'), */ '01-JUN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 9.90, /* LOAD_FILE('Holdlamis.png'), */ '01-JUN-20');
 
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price,/*  Cover,  */UploadDate) VALUES (0300, 000003, 'Rim', null, 0.00, /* LOAD_FILE('Rim.png'), */ '12-FEB-19');
 INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0301, 000003, 'Road Map', 3.5, 0.00, /* LOAD_FILE('Road_Map.png'), */'21-SEP-19');
@@ -342,6 +343,7 @@ INSERT INTO Type (Name) VALUES ('Puzzle');
 INSERT INTO Type (Name) VALUES ('FPS');
 INSERT INTO Type (Name) VALUES ('Visual Novel');
 INSERT INTO Type (Name) VALUES ('Crafting');
+INSERT INTO Type (Name) VALUES ('Parkour');
 
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('FIFA is Da BEST', 'Sports', 000010, '27-NOV-2019');
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('Animal Crossing Marketplace', 'Simulation', 000002, '02-OCT-2019');
@@ -432,3 +434,45 @@ INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('d1d93e
 	'I was really surprised by how much I enjoyed it. This game has its own flavor while following the standard action game model, thanks to the amazing dialog design. I hope it has a sequal. ', to_date('2020-05-04:08:00:52','YYYY-MM-DD:HH24:MI:SS'));
 INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('c8a91850-dcc5-4751', 000001, 1102,
 	'SUB DUDE 2 POINTS 4 U', to_date('2020-05-11:14:31:44','YYYY-MM-DD:HH24:MI:SS'));
+
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0805, to_date('2020-01-04:12:38:56','YYYY-MM-DD:HH24:MI:SS'), 'I think so too. Thx for playing');
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000002, 0200, to_date('2019-12-15:10:34:51','YYYY-MM-DD:HH24:MI:SS'), 
+	'Thank you! I have made another game of the same type but less demanding. You can check out my homepage for that!');
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0802, to_date('2020-01-17:02:28:04','YYYY-MM-DD:HH24:MI:SS'), 
+	'Thx for telling me that. It''s fixed now. Enjoy. ');
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000003, 0302, to_date('2020-05-04:16:30:07','YYYY-MM-DD:HH24:MI:SS'), 
+	'Well thank you very much! I put a lot more effort into designing this one than I ever did. I am currently working on the sequal and it is going to be a 3D game. I will definitely notify you when it comes out!');
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000012, 0302, to_date('2020-05-04:17:02:59','YYYY-MM-DD:HH24:MI:SS'), 
+	'WOW bring the work on man. Looking forward to that. ');
+
+INSERT INTO favorites (UserID, Type) VALUES (000001, 'Action');
+INSERT INTO favorites (UserID, Type) VALUES (000001, 'RPG');
+INSERT INTO favorites (UserID, Type) VALUES (000002, 'Simulation');
+INSERT INTO favorites (UserID, Type) VALUES (000002, 'Sports');
+INSERT INTO favorites (UserID, Type) VALUES (000002, 'Strategy');
+
+INSERT INTO isOf (GID, Type) VALUES (0200, 'Parkour');
+INSERT INTO isOf (GID, Type) VALUES (0201, 'RPG');
+INSERT INTO isOf (GID, Type) VALUES (0202, 'RPG');
+INSERT INTO isOf (GID, Type) VALUES (0203, 'Sports');
+INSERT INTO isOf (GID, Type) VALUES (0204, 'RPG');
+
+INSERT INTO isOf (GID, Type) VALUES (0300, 'RPG');
+INSERT INTO isOf (GID, Type) VALUES (0301, 'RPG');
+INSERT INTO isOf (GID, Type) VALUES (0302, 'Action');
+
+INSERT INTO isOf (GID, Type) VALUES (0801, 'Simulation');
+INSERT INTO isOf (GID, Type) VALUES (0802, 'Simulation');
+INSERT INTO isOf (GID, Type) VALUES (0803, 'RPG');
+INSERT INTO isOf (GID, Type) VALUES (0804, 'Simulation');
+INSERT INTO isOf (GID, Type) VALUES (0805, 'Simulation');
+INSERT INTO isOf (GID, Type) VALUES (0806, 'Action');
+INSERT INTO isOf (GID, Type) VALUES (0807, 'RPG');
+
+INSERT INTO isOf (GID, Type) VALUES (1100, 'Parkour');
+INSERT INTO isOf (GID, Type) VALUES (1101, 'Simulation');
+INSERT INTO isOf (GID, Type) VALUES (1102, 'Crafting');
+INSERT INTO isOf (GID, Type) VALUES (1103, 'Simulation');
+
+INSERT INTO mentions (ArtID, GID) VALUES ('diqw78f', 0807);
+INSERT INTO mentions (ArtID, GID) VALUES ('987dshkjg', 0302);
