@@ -38,5 +38,6 @@ $devName = $row[1];
 $price = $row[2];
 $rating = $row[3];
 
-
+//close the connection i guess? Do I always have to do that?
+oci_close($conn);
 ?>
