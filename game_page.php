@@ -1,4 +1,7 @@
 <?php
+
+session_save_path("/tmp");
+session_start();
 // Connect to DB
 $conn = OCILogon("ora_reyred", "a74388869", "dbhost.students.cs.ubc.ca:1522/stu");
 
@@ -17,7 +20,8 @@ debug_to_console("Database is Connected");
     // Rating 
 $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
         FROM UserID u, Game_uploads g 
-        WHERE g.DevID = u.ID";
+        WHERE g.DevID = u.ID
+        ORDER BY g.Name";
 
 $games = oci_parse($conn, $sql);
 
@@ -39,5 +43,15 @@ $price = $row[2];
 $rating = $row[3];
 
 //close the connection i guess? Do I always have to do that?
+oci_free_statement($games);
 oci_close($conn);
+
+function debug_to_console($data) {
+    $output = $data;
+    if (is_array($output))
+        $output = implode(',', $output);
+
+    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+}
+
 ?>
