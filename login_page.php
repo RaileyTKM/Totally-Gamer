@@ -11,14 +11,14 @@
     <form method="post">
         <input type="text" name="username" placeholder="Username" required="required" />
         <input type="password" name="password" placeholder="Password" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Sign in</button>
+        <button type="submit" name="login" class="btn btn-primary btn-block btn-large">Sign in</button>
     </form>
     <?php
 
         session_save_path("/tmp");
         session_start();
 
-        if(isset($_POST['username'])&&isset($_POST['password'])){
+        if(isset($_POST['login'])){
                 $conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
                 if (!$conn) {
                     $e = oci_error();   // For oci_connect errors do not pass a handle

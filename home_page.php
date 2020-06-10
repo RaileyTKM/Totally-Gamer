@@ -39,9 +39,6 @@ $(function(){
 	//extract userid from login page
     session_save_path("/tmp");
 	session_start();
-	echo "Hello world!<br>";
-	echo $_SESSION['userid'];
-
     ?>
 </body>
 </html>
