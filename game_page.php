@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" content="width=device-width, initial-scale=1">
-	<title>Where ARE MY FRIENDS?</title>
+	<title>Game Collections</title>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<link rel="stylesheet" href="navStyle.css">
 	<style>
@@ -64,29 +64,34 @@ debug_to_console("Database is Connected");
     // Developer Nickname
     // Price
     // Rating
-$sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
+$sql1 = "SELECT g.Name, u.Nickname, g.Price, g.Rating
         FROM UserID u, Game_uploads g
         WHERE g.DevID = u.ID
         ORDER BY g.Name";
 
-$games = oci_parse($conn, $sql);
+$allGames = oci_parse($conn, $sql1);
 
 // Execute sql
-$r = oci_execute($games, OCI_DEFAULT);
+$r = oci_execute($allGames, OCI_DEFAULT);
 
 if (!$r) {
 
-    $e = oci_error($stid);
+    $e = oci_error($allGames);
     debug_to_console($e);
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
 echo "<table>";
-echo "<tr><th>ID</th><th>Nickname</th><th>Gender</th><th>Birthday</th><th>Role</th></tr>";
+echo "<tr><th>All Games</th></tr>";
+echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th></tr>";
 // Fetch data
 
-while ($row = OCI_Fetch_Array($games, OCI_BOTH)) {
-    echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td></tr>"; //or just use "echo $row[0]"
-    // echo $row[0];
+while ($row = OCI_Fetch_Array($allGames, OCI_BOTH)) {
+    if ($row[3] == null) {
+        echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . "</td></tr>";
+    } else {
+        echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td></tr>";
+        // echo $row[0];
+    }
 }
 // Store userid to server and pass to next page
 echo "</table>";
