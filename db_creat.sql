@@ -144,10 +144,10 @@ CREATE TABLE plays (
 CREATE TABLE GameRecord_recordedTo (
 	PlayerID	INT,
 	GID			INT,
-	Start_Time		TIMESTAMP(2),
-	End_Time		TIMESTAMP(2),
+	StartTime		TIMESTAMP(2),
+	EndTime		TIMESTAMP(2),
 	Score		INT,
-	PRIMARY KEY (PlayerID, GID, Start_Time),
+	PRIMARY KEY (PlayerID, GID, StartTime),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
 	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
 );
