@@ -1,4 +1,50 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1">
+	<title>Where ARE MY FRIENDS?</title>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<link rel="stylesheet" href="navStyle.css">
+	<style>
+	html {
+		background: url(UBC.jpg) no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+    body {
+    text-align: center;
+    }
+	table { display: inline-block; text-align: left; font-size:20px; }
+	.header{
+    margin-top: 1%;
+    font-size: 400%;
+    text-align: center;
+	margin-bottom: 3%;
+    }
+    .tname{
+        margin : 1%;
+        text-align: center;
+        font-size: 200%;
+    }
+    table, th, td {
+  border: 1px solid black;
+}
+	</style>
+</head>
+<body>
+<!--Navigation bar-->
+<div id="nav-placeholder">
+
+</div>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("navbar.html");
+});
+</script>
+<!--end of Navigation bar--><?php
 
 session_save_path("/tmp");
 session_start();
@@ -13,13 +59,13 @@ if (!$conn) {
 debug_to_console("Database is Connected");
 
 // query for Game_uploads
-// Game page would display a game's: 
+// Game page would display a game's:
     // Name
-    // Developer Nickname 
+    // Developer Nickname
     // Price
-    // Rating 
+    // Rating
 $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
-        FROM UserID u, Game_uploads g 
+        FROM UserID u, Game_uploads g
         WHERE g.DevID = u.ID
         ORDER BY g.Name";
 
@@ -34,13 +80,23 @@ if (!$r) {
     debug_to_console($e);
     trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 }
+echo "<table>";
+echo "<tr><th>ID</th><th>Nickname</th><th>Gender</th><th>Birthday</th><th>Role</th></tr>";
+// Fetch data
 
-// Fetch all game data 
-$row = oci_fetch_array($games, OCI_BOTH);
-$gName = $row[0];
-$devName = $row[1];
-$price = $row[2];
-$rating = $row[3];
+while ($row = OCI_Fetch_Array($games, OCI_BOTH)) {
+    echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td></tr>"; //or just use "echo $row[0]"
+    // echo $row[0];
+}
+// Store userid to server and pass to next page
+echo "</table>";
+
+// Fetch all game data
+// $row = oci_fetch_array($games, OCI_BOTH);
+// $gName = $row[0];
+// $devName = $row[1];
+// $price = $row[2];
+// $rating = $row[3];
 
 //close the connection i guess? Do I always have to do that?
 oci_free_statement($games);
@@ -55,3 +111,6 @@ function debug_to_console($data) {
 }
 
 ?>
+
+</body>
+</html>
