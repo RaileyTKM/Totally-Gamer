@@ -121,12 +121,12 @@ function searchByName(){
                 WHERE g.DevID = u.ID
                 ORDER BY g.Name";
 
-        $allGames = oci_parse($conn, $sql1);
+$allGames = oci_parse($conn, $sql1);
 
         // Execute sql
         $r = oci_execute($allGames, OCI_DEFAULT);
 
-        if (!$r) {
+if (!$r) {
 
             $e = oci_error($allGames);
             debug_to_console($e);
@@ -139,12 +139,11 @@ function searchByName(){
 
         while ($row = OCI_Fetch_Array($allGames, OCI_BOTH)) {
             if ($row[3] == null) {
-                // echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-                // <td><form method="post"><button type="submit" class="btn btn-primary btn-block btn-large"  value='.$row[0].' name="buy">Buy</button></form></td></tr>';
-                // echo $_POST['buy'];
-                // echo empty($_POST['buy']);
-            } else {
                 echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
+                <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+                </tr>';
+            } else {
+                echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
                 <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
                 </tr>';
             }
