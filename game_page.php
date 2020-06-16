@@ -6,34 +6,34 @@
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<link rel="stylesheet" href="navStyle.css">
 	<style>
-	html {
-		background: url(UBC.jpg) no-repeat center center fixed;
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
-	}
-    body {
-    text-align: center;
-    }
-	table { display: inline-block; text-align: left; font-size:20px; }
-	.header{
-    margin-top: 1%;
-    font-size: 400%;
-    text-align: center;
-	margin-bottom: 1%;
-    }
-    .tname{
-        margin : 1%;
+        html {
+            background: url(UBC.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        body {
         text-align: center;
-        font-size: 200%;
-    }
-    table, th, td {
-  border: 1px solid black;
-}
-    button{
+        }
+        table { display: inline-block; text-align: left; font-size:20px; }
+        .header{
+        margin-top: 1%;
+        font-size: 400%;
+        text-align: center;
         margin-bottom: 1%;
-    }
+        }
+        .tname{
+            margin : 1%;
+            text-align: center;
+            font-size: 200%;
+        }
+        table, th, td {
+        border: 1px solid black;
+        }
+        button{
+            margin-bottom: 1%;
+        }
 	</style>
 </head>
 <body>
@@ -43,12 +43,12 @@
 </div>
 
 <script>
-$(function(){
-  $("#nav-placeholder").load("navbar.html");
-});
+    $(function(){
+    $("#nav-placeholder").load("navbar.html");
+    });
 </script>
 <!--end of Navigation bar-->
-<div class="header">All Games</div>
+<div class="header">Game Collections</div>
 
 
 <form method="post">
@@ -73,8 +73,11 @@ $(function(){
     }
     debug_to_console("Database is Connected");
 
-
-
+    if (isset($_SESSION['userid'])) {
+        $action = "purchase_game.php";
+    } else {
+        $action = "login_page.php";
+    }
 
     if (isset($_POST['search'])) {
         searchGame();
@@ -92,21 +95,19 @@ function searchGame(){
         case "Developer":
             searchByDev();
             break;
-        case "Game Name":
-            searchByName();
-            break;
         default:
             searchByName();
     endswitch;
 }
 
 // !!! All searches are CASE SENSITIVE
-// TODO: autocomplete textbox
+// TODO: autocomplete textbox?
 function searchByType(){
     global $conn;
+    global $action;
     $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
             FROM UserID u, Game_uploads g, isOf i
-            WHERE g.DevID = u.ID AND i.GID = g.GID AND i.Type = :tp_bv 
+            WHERE g.DevID = u.ID AND i.GID = g.GID AND i.Type = :tp_bv
             ORDER BY g.Name";
 
     $found = oci_parse($conn, $sql);
@@ -129,11 +130,11 @@ function searchByType(){
     while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
         if ($row[3] == null) {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         } else {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         }
     }
@@ -144,6 +145,7 @@ function searchByType(){
 }
 function searchByDev(){
     global $conn;
+    global $action;
     $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
             FROM UserID u, Game_uploads g
             WHERE g.DevID = u.ID AND u.Nickname = :devn_bv
@@ -169,11 +171,11 @@ function searchByDev(){
     while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
         if ($row[3] == null) {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         } else {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         }
     }
@@ -184,6 +186,7 @@ function searchByDev(){
 }
 function searchByName(){
     global $conn;
+    global $action;
     $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
             FROM UserID u, Game_uploads g
             WHERE g.DevID = u.ID AND g.Name LIKE :gn_bv
@@ -209,11 +212,11 @@ function searchByName(){
     while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
         if ($row[3] == null) {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         } else {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         }
     }
@@ -225,6 +228,7 @@ function searchByName(){
 
 function displayAllGame(){
     global $conn;
+    global $action;
     $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
             FROM UserID u, Game_uploads g
             WHERE g.DevID = u.ID
@@ -249,11 +253,11 @@ function displayAllGame(){
     while ($row = OCI_Fetch_Array($allGames, OCI_BOTH)) {
         if ($row[3] == null) {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         } else {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action="purchase_game.php" method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         }
     }

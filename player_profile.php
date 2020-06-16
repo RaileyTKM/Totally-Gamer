@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" content="width=device-width, initial-scale=1">
-	<title>My Info</title>
+	<title>My Profile</title>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <link rel="stylesheet" href="navStyle.css">
     <style>
@@ -36,7 +36,7 @@ $(function(){
 	//extract userid from login page
     session_save_path("/tmp");
 	session_start();
-    ?>
+?>
 
 <form method="post">
   <label for="nickname">Nickname:</label>
@@ -52,6 +52,7 @@ $(function(){
 
   <input type="text" required="required" name="role" readonly="readonly" value="<?php echo $_SESSION['userRole'];?>"><br><br>
   <button type="submit" class="btn btn-primary btn-block btn-large" name="update">Update</button>
+  <button type="submit" class="btn btn-primary btn-block btn-large" name="logout">Log Out</button>
 </form>
 
 <?php
@@ -117,8 +118,9 @@ $(function(){
 
         }
 
-
-        
+        if (isset($_POST['logout'])) {
+            session_destroy();
+        }
 
 
         function debug_to_console($data) {

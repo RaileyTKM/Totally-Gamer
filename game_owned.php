@@ -2,35 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" content="width=device-width, initial-scale=1">
-	<title>My Games</title>
+	<title>My Collection</title>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<link rel="stylesheet" href="navStyle.css">
 	<style>
-	html {
-		background: url(UBC.jpg) no-repeat center center fixed;
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
-	}
-    body {
-    text-align: center;
-    }
-	table { display: inline-block; text-align: left; font-size:20px; }
-	.header{
-    margin-top: 1%;
-    font-size: 400%;
-    text-align: center;
-	margin-bottom: 3%;
-    }
-    .tname{
-        margin : 1%;
-        text-align: center;
-        font-size: 200%;
-    }
-    table, th, td {
-  border: 1px solid black;
-}
+		html {
+			background: url(UBC.jpg) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+		body {
+		text-align: center;
+		}
+		table { display: inline-block; text-align: left; font-size:20px; }
+		.header{
+		margin-top: 1%;
+		font-size: 400%;
+		text-align: center;
+		margin-bottom: 3%;
+		}
+		.tname{
+			margin : 1%;
+			text-align: center;
+			font-size: 200%;
+		}
+		table, th, td {
+		border: 1px solid black;
+		}
 	</style>
 </head>
 <body>
