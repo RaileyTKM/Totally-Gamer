@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" content="width=device-width, initial-scale=1">
-	<title>Where ARE MY FRIENDS?</title>
+	<title>My Games</title>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<link rel="stylesheet" href="navStyle.css">
 	<style>
@@ -48,9 +48,7 @@ $(function(){
 <div class="header">My Collection</div>
 
 
-<!-- TODO: display game owned with game_name,price,paid by, date, my rate -->
-<!-- TODO: button display game record order by start time and AccumPlayTime-->
-<!-- TODO: button display my achievement order by game-->
+<!-- TODO(optional): Rate a Game if haven't -->
 <?php
 	//extract userid from login page
     session_save_path("/tmp");
@@ -128,7 +126,7 @@ $(function(){
 		}
         echo "<div class='tname'>". 'Overall Info' ."</div>";
 		echo "<table>";
-		echo "<tr><th>Game Name</th><th>Accumulative Play Time</th><th>CurrStage</th><th>Accumulative Score</th></tr>";
+		echo "<tr><th>Game Name</th><th>Accumulative Play Time/hrs</th><th>CurrStage</th><th>Accumulative Score</th></tr>";
 		// Fetch data
 
         while ($row = OCI_Fetch_Array($stid, OCI_BOTH)) {
@@ -246,6 +244,8 @@ $(function(){
         FROM Purchases_profits_detail p, Game_uploads g, rates r
 		WHERE p.PlayerID = :userid AND p.GID = g.GID AND r.PlayerID = p.PlayerID And r.GID = p.GID order by name');
 
+		$numGames = oci_parse($conn, 'SELECT COUNT(*) FROM Purchases_profits_detail p WHERE p.PlayerID = :userid');
+
 		$userid = $_SESSION['userid'];
 
 		// Set input
@@ -254,7 +254,9 @@ $(function(){
 
 		foreach ($ba as $key => $val) {
 			oci_bind_by_name($stid, $key, $ba[$key]);
+			oci_bind_by_name($numGames, $key, $ba[$key]);
 		}
+
 
 		if (!$stid) {
 
@@ -266,13 +268,16 @@ $(function(){
 		// Excute sql
 
 		$r = OCIExecute($stid, OCI_DEFAULT);
+		$s = OCIExecute($numGames, OCI_DEFAULT);
 
 		if (!$r) {
 			$e = oci_error($stid);
 			debug_to_console($e);
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 		}
-
+		$num = OCI_Fetch_Array($numGames, OCI_BOTH);
+		echo "Total Game Owned: ".$num[0]."<br>";
+	
 		echo "<table>";
 		echo "<tr><th>Name</th><th>Price</th><th>Pay Method</th><th>Purchase Date</th><th>My rates</th></tr>";
 		// Fetch data
@@ -283,8 +288,10 @@ $(function(){
             // echo $row[0];
         }
 		// Store userid to server and pass to next page
-        echo "</table>";
+		echo "</table>";
+
 		oci_free_statement($stid);
+		oci_free_statement($numGames);
     }
 
     
