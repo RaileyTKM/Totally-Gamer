@@ -141,26 +141,6 @@ function displayAllForum(){
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
 
-//     <!-- <div class="w3-container"style="display: inline-block" >
-//     <div class="w3-card-4" style="display: inline-block;width:100%">
-//       <header class="w3-container w3-blue">
-//         <h3>John Doe</h3>
-//       </header>
-    //   <div class="w3-container" style="display: inline-block">
-    //     <p style="margin:0;display: inline;float:left">FORUM</p>
-    //     <p style="margin:0;display: inline;float:middle">AUTHOR</p>
-    //     <p style="margin:0;display: inline;float:right">TIME</p>
-    //     <hr >
-    //     <p>CEO at Mighty Schools. Marketing and Advertising. Seeking a new job and new opportunities.</p><br>
-    //   </div>
-//       <button class="w3-button w3-block w3-dark-grey">Follow Up</button>
-//   </div> -->
-  
-
-
-
-
-
     while ($row = OCI_Fetch_Array($allForum, OCI_BOTH)) {
         echo '<div class="w3-container"style="display: inline-block;width:60%;max-width:60%" >
                 <div class="w3-card-4" style="display: inline-block;width:60%;max-width:60%">
@@ -198,10 +178,109 @@ function searchForum(){
 }
 
 function searchName(){
+    global $conn;
+
+    $sql = "SELECT p.Title, f.Name, u.Nickname, p.Time, p.Content, p.Views
+            FROM ForumArticle_posts p
+            INNER JOIN Forum_category_creates f
+            ON f.Name = p.Forum
+            INNER JOIN UserID u
+            ON p.AuthorID = u.ID
+            Where f.Name LIKE :gn_bv
+            ORDER BY p.Time DESC";
+
+
+    $found = oci_parse($conn, $sql);
+    $gn = "%". $_POST['forum']. "%";
+    oci_bind_by_name($found, ":gn_bv", $gn);
+
+    // Execute sql
+    $r = oci_execute($found, OCI_DEFAULT);
+
+    if (!$r) {
+
+        $e = oci_error($found);
+        debug_to_console($e);
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+    }
+
+    while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
+        echo '<div class="w3-container"style="display: inline-block;width:60%;max-width:60%" >
+                <div class="w3-card-4" style="display: inline-block;width:60%;max-width:60%">
+                    <header class="w3-container w3-blue">
+                        <h3>'. $row[0] .'</h3>
+                    </header>
+                    <div class="w3-container" style="display: inline-block">
+                        <p style="margin: 0px 20px 0px 0px;display: inline;float:left">Forum:'.$row[1].'</p>
+                        <p style="margin:0;display: inline;float:middle">Author:'.$row[2].'</p>
+                        <p style="margin: 0px 0px 0px 20px;display: inline;float:right">Time:'.$row[3].'</p>
+                        <hr >
+                        <p>'.$row[4].'</p><br>
+                        <p style="margin: 0px 0px 0px 20px;display: inline;float:right">Views:'.$row[5].'</p>
+                    </div>
+                    <button class="w3-button w3-block w3-dark-grey">Follow Up</button>
+                </div>
+            </div>';
+
+    }
+    // Store userid to server and pass to next page
+    echo "</table>";
+
+    oci_free_statement($found);
 
 }
 
 function searchTypeName(){
+
+    global $conn;
+
+    $sql = "SELECT p.Title, f.Name, u.Nickname, p.Time, p.Content, p.Views
+            FROM ForumArticle_posts p
+            INNER JOIN Forum_category_creates f
+            ON f.Name = p.Forum
+            INNER JOIN UserID u
+            ON p.AuthorID = u.ID
+            Where f.Category = :type AND f.Name LIKE :gn_bv  
+            ORDER BY p.Time DESC";
+
+
+    $found = oci_parse($conn, $sql);
+    $gn = "%". $_POST['forum']. "%";
+    oci_bind_by_name($found, ":gn_bv", $gn);
+    oci_bind_by_name($found, ":type", $_POST['type']);
+    // Execute sql
+    $r = oci_execute($found, OCI_DEFAULT);
+
+    if (!$r) {
+
+        $e = oci_error($found);
+        debug_to_console($e);
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+    }
+
+    while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
+        echo '<div class="w3-container"style="display: inline-block;width:60%;max-width:60%" >
+                <div class="w3-card-4" style="display: inline-block;width:60%;max-width:60%">
+                    <header class="w3-container w3-blue">
+                        <h3>'. $row[0] .'</h3>
+                    </header>
+                    <div class="w3-container" style="display: inline-block">
+                        <p style="margin: 0px 20px 0px 0px;display: inline;float:left">Forum:'.$row[1].'</p>
+                        <p style="margin:0;display: inline;float:middle">Author:'.$row[2].'</p>
+                        <p style="margin: 0px 0px 0px 20px;display: inline;float:right">Time:'.$row[3].'</p>
+                        <hr >
+                        <p>'.$row[4].'</p><br>
+                        <p style="margin: 0px 0px 0px 20px;display: inline;float:right">Views:'.$row[5].'</p>
+                    </div>
+                    <button class="w3-button w3-block w3-dark-grey">Follow Up</button>
+                </div>
+            </div>';
+
+    }
+    // Store userid to server and pass to next page
+    echo "</table>";
+
+    oci_free_statement($found);
 
 }
 
