@@ -73,7 +73,11 @@ $(function(){
     if (isset($_POST['upload'])) {
         OCILogoff($conn);
 		header('Location: upload_game.php');
-    }
+	}
+	
+	if (isset($_GET['delete'])) {
+		deleteGame();
+	}
 
     OCILogoff($conn);
 
@@ -116,13 +120,50 @@ $(function(){
 
         while ($row = OCI_Fetch_Array($stid, OCI_BOTH)) {
             echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . $row[4] 
-            . "</td></tr>"; 
+            . "</td><td><form method='get'><button type='summit' name='delete' value='".$row[0]."'>Delete</button></form></td></tr>"; 
         }
 
 		echo "</table>";
 
         oci_free_statement($stid);
-    }
+	}
+	
+	function deleteGame() {
+		global $conn;
+		$del = oci_parse($conn, 'DELETE FROM Game_uploads WHERE GID=:gid');
+
+        $gid = $_GET['delete'];
+		$ba = array(':gid' => $gid);
+
+		foreach ($ba as $key => $val) {
+			oci_bind_by_name($del, $key, $ba[$key]);
+		}
+
+		if (!$del) {
+
+			$e = oci_error($conn);
+			debug_to_console($e);
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+
+		// Excute sql
+
+		$r = OCIExecute($del, OCI_DEFAULT);
+
+		if (!$r) {
+			$e = oci_error($del);
+			debug_to_console($e);
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$r = oci_commit($conn);
+        if (!$r) {
+            $e = oci_error($conn);
+            trigger_error(htmlentities($e['message']), E_USER_ERROR);
+		}
+		oci_free_statement($del);
+		OCILogoff($conn);
+		header('Location: game_created.php');
+	}
 
     function debug_to_console($data) {
         $output = $data;
