@@ -146,7 +146,7 @@ $(function(){
 
         if (isset($_POST['logout'])) {
             session_destroy();
-            header('Location: player_profile.php'); 
+            header('Location: login_page.php'); 
         }
 
 

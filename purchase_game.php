@@ -16,6 +16,10 @@
         body {
         	text-align: center;
         }
+
+
+
+
 		table { display: inline-block; text-align: left; font-size:20px; }
         .header{
 			margin-top: 1%;

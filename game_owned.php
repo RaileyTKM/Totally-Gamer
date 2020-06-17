@@ -245,9 +245,17 @@ $(function(){
 		// Parse sql
 		// select i.User2ID, f.Nickname, f.Gender, f.Birthday, f.Role from Purchases_profits_detail p, 
 		// Game_uploads g where i.User1ID = 1 AND i.User2ID = f.ID order by nickname;
-		$stid = oci_parse($conn, 'SELECT g.Name, g.Price, p.PayMethod , p.Purchase_Date , r.Rating
-        FROM Purchases_profits_detail p, Game_uploads g, rates r
-		WHERE p.PlayerID = :userid AND p.GID = g.GID AND r.PlayerID = p.PlayerID And r.GID = p.GID order by name');
+		// $stid = oci_parse($conn, 'SELECT g.Name, g.Price, p.PayMethod , p.Purchase_Date , r.Rating
+        // FROM Purchases_profits_detail p, Game_uploads g, rates r
+		// WHERE p.PlayerID = :userid AND p.GID = g.GID AND r.PlayerID = p.PlayerID And r.GID = p.GID order by name');
+		$stid = oci_parse($conn, 'SELECT g.Name, g.Price, p.PayMethod , p.Purchase_Date, r.Rating
+        FROM Purchases_profits_detail p
+		INNER JOIN Game_uploads g
+		ON p.GID = g.GID
+		INNER JOIN rates r
+		ON r.PlayerID = p.PlayerID And r.GID = p.GID
+		WHERE p.PlayerID = :userid
+		order by Name');
 
 		$numGames = oci_parse($conn, 'SELECT COUNT(*) FROM Purchases_profits_detail p WHERE p.PlayerID = :userid');
 

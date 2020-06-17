@@ -119,7 +119,9 @@ CREATE TABLE rates (
 	Rating		INT,
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player (ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads (GID)
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE views (
@@ -128,7 +130,9 @@ CREATE TABLE views (
 	Time		TIMESTAMP(2),
 	PRIMARY KEY (PlayerID, GID, Time),
 FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE plays (
@@ -139,7 +143,9 @@ CREATE TABLE plays (
 	AccumScore		INT,
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE GameRecord_recordedTo (
@@ -150,7 +156,9 @@ CREATE TABLE GameRecord_recordedTo (
 	Score		INT,
 	PRIMARY KEY (PlayerID, GID, StartTime),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 -- CREATE TABLE Purchases_profits_records (
@@ -169,7 +177,9 @@ CREATE TABLE Purchases_profits_detail (
 	PayMethod	VARCHAR(10),
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE achieves (
@@ -185,7 +195,9 @@ CREATE TABLE associates (
 	GID	INT,
 	AID	VARCHAR(10),
 	PRIMARY KEY (GID, AID),
-	FOREIGN KEY (GID) REFERENCES  Game_uploads (GID),
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (AID) REFERENCES Achievement(AID)
 );
 
@@ -209,7 +221,9 @@ CREATE TABLE replies (
 	Time		TIMESTAMP(2),
 	Content	VARCHAR(2000),
 	PRIMARY KEY (UserID, GID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID),
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (UserID) REFERENCES UserID (ID)
 );
 
@@ -225,6 +239,9 @@ CREATE TABLE isOf (
 	GID		INT,
 	Type		VARCHAR(20),
 	PRIMARY KEY (GID, Type),
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (Type) REFERENCES Type (Name)
 );
 
@@ -232,7 +249,9 @@ CREATE TABLE mentions (
 	ArtID		VARCHAR(10),
 	GID		INT,
 	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts (ArtID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID)
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18', 'Player');
