@@ -14,23 +14,33 @@
             background-size: cover;
         }
         body {
-        text-align: center;
+        	text-align: center;
         }
 		table { display: inline-block; text-align: left; font-size:20px; }
         .header{
-        margin-top: 1%;
-        font-size: 400%;
-        text-align: center;
-        margin-bottom: 3%;
+			margin-top: 1%;
+			font-size: 400%;
+			text-align: center;
+			margin-bottom: 3%;
         }
 		.tname{
 			margin : 1%;
 			text-align: center;
 			font-size: 200%;
 		}
+		.warning{
+			margin : 1%;
+			text-align: center;
+			font-size: 200%;
+			background-color: #da283d;
+			color: #ffffff;
+		}
         table, th, td {
-        border: 1px solid black;
+        	border: 1px solid black;
         }
+		.hide{
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -65,16 +75,52 @@
 
 	//display purchase information 
 	gameInfo($gid);
+	$bought = (int)checkBought($gid);
+
 	
+	function checkBought($gid) {
+		global $conn;
+		$stid = oci_parse($conn, 'SELECT COUNT(*) FROM Purchases_profits_detail p
+		WHERE p.GID = :gid AND p.PlayerID = :userid');
+		
+		$userid = $_SESSION['userid'];
+		$ba = array(':gid' => $gid, ':userid' => $userid);
+		foreach ($ba as $key => $val) {
+			oci_bind_by_name($stid, $key, $ba[$key]);
+		}
+
+		if (!$stid) {
+
+			$e = oci_error($conn);
+			debug_to_console($e);
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+
+		$r = OCIExecute($stid, OCI_DEFAULT);
+		if (!$r) {
+			$e = oci_error($stid);
+			debug_to_console($e);
+			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+		}
+		$row = OCI_Fetch_Array($stid, OCI_BOTH);
+        return $row[0];
+        oci_free_statement($stid);
+	}
 ?>
 
 <div class='tname'>Payment Methods</div>
-<form method="POST"> <!--refresh page when submitted -->
+<form method="POST" <?php if ($bought){ echo 'class="hide"';} ?>> <!--refresh page when submitted -->
     <input type="submit" value="PayPal" name="paypal"></p>
 
     <input type="submit" value="Credit Card" name="credit"></p>
 
     <input type="submit" value="Debit Card" name="debit"></p>
+</form>
+
+<div class='warning <?php if (!$bought){ echo 'hide';} ?>'>You have already purchased this game</div>
+
+<form method="POST"> <!--refresh page when submitted -->
+    <input type="submit" value="Return to Games" name="return"></p>
 </form>
 
 
@@ -89,7 +135,12 @@
     } else if (isset($_POST['debit'])) {
         $stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'DebitCard')");
         purchase($stid,$gid);
-    }
+	}
+	
+	if (isset($_POST['return'])) {
+		OCILogoff($conn);
+        header('Location: game_page.php');
+	}
 
     OCILogoff($conn);
 
@@ -99,7 +150,6 @@
         $stid = oci_parse($conn, 'SELECT g.Name, u.Nickname, g.Price
         FROM Game_uploads g, UserID u
 		WHERE g.GID = :gid AND g.DevID = u.ID');
-
 
 		$ba = array(':gid' => $gid);
 		foreach ($ba as $key => $val) {
