@@ -103,8 +103,8 @@
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 		}
 		$row = OCI_Fetch_Array($stid, OCI_BOTH);
-        return $row[0];
-        oci_free_statement($stid);
+		return $row[0];
+		oci_free_statement($stid);
 	}
 ?>
 
@@ -184,7 +184,7 @@
 
     function purchase($stid,$gid){
         global $conn;
-        $rate = oci_parse($conn, "INSERT INTO rates VALUES (:userid, :gid, null)");
+        $rate = oci_parse($conn, "INSERT INTO rates VALUES (:userid, :gid, 0)");
 
         $userid = $_SESSION['userid'];
 

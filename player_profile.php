@@ -42,10 +42,36 @@ $(function(){
   <label for="nickname">Nickname:</label>
   <input type="text" required="required" name="nickname" value="<?php echo $_SESSION['userName'];?>"><br><br>
   <label for="gender">Gender:</label>
-  <input type="text" required="required" name="gender" value="<?php echo $_SESSION['userGender'];?>"><br><br>
-  <label for="birthday">Birthday:</label>
-    <!-- TODO: Change type text to date, convert date type to fit in value -->
-  <input type="text" required="required" name="birthday" value="<?php echo $_SESSION['userBirthday'];?>"><br><br>
+  <select name="gender">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+      <option selected="selected"><?php echo $_SESSION['userGender'];?></option>
+  </select><br><br>
+
+  <fieldset>
+      <legend>Birthday:</legend>
+      <label for="day">Day:</label>
+      <input type="number" required="required" name="day" min='1' max='31' value=<?php echo substr($_SESSION['userBirthday'], 0, 2);?>>
+      <label for="month">Month:</label>
+      <select name="month">
+        <option value="JAN">JAN</option>
+        <option value="FEB">FEB</option>
+        <option value="MAR">MAR</option>
+        <option value="APR">APR</option>
+        <option value="MAY">MAY</option>
+        <option value="JUN">JUN</option>
+        <option value="JUL">JUL</option>
+        <option value="AUG">AUG</option>
+        <option value="SEP">SEP</option>
+        <option value="OCT">OCT</option>
+        <option value="NOV">NOV</option>
+        <option value="DEC">DEC</option>
+        <option selected="selected"><?php echo substr($_SESSION['userBirthday'], 3, 3);?></option>
+      </select>
+      <label for="year">Year(last 2 digits):</label>
+      <input type="number" required="required" name="year" min='00' max='99' value=<?php echo substr($_SESSION['userBirthday'], 7, 2);?>>
+  </fieldset><br>
   <label for="accCreation">Account Created At:</label>
   <input type="text" required="required" name="accCreation" readonly="readonly" value="<?php echo $_SESSION['userAccCreation'];?>"><br><br>
   <label for="role">Role:</label>
@@ -73,7 +99,7 @@ $(function(){
 
                     $nickname = $_POST['nickname'];
                     $gender = $_POST['gender'];
-                    $birthday = $_POST['birthday'];
+                    $birthday = $_POST['day'] . "-" . $_POST['month'] . "-" . $_POST['year'];
                     $id =  $_SESSION['userid'];
 
                     // Set input
@@ -120,7 +146,7 @@ $(function(){
 
         if (isset($_POST['logout'])) {
             session_destroy();
-            header('Location: login_page.php'); 
+            header('Location: player_profile.php'); 
         }
 
 

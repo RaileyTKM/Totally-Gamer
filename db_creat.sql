@@ -22,6 +22,7 @@ drop table replies cascade constraints;
 drop table favorites cascade constraints;
 drop table isOf cascade constraints;
 drop table mentions cascade constraints;
+drop sequence GID_generate;
 
 CREATE TABLE UserID (
 	ID		INT		 PRIMARY KEY,
@@ -52,7 +53,7 @@ CREATE TABLE Game_uploads (
 	Name 		VARCHAR(40) 	NOT NULL 	UNIQUE,
 	Rating		DECIMAL(2,1),
 	Price		DECIMAL(10,2),
-	/* Cover		BLOB, */
+	--Cover
 	UploadDate	DATE,
 FOREIGN KEY (DevID) REFERENCES Developer (ID)
 );
@@ -64,8 +65,8 @@ CREATE TABLE Game_rate (
 
 CREATE TABLE Achievement (
 	AID	VARCHAR(10)	PRIMARY KEY,
-	Name	VARCHAR(20)	NOT NULL--,
-	/* Badge	BLOB */
+	Name	VARCHAR(20)	NOT NULL
+	--Badge
 );
 
 CREATE TABLE Type (
@@ -262,28 +263,28 @@ INSERT INTO Player (ID) VALUES (000010);
 INSERT INTO Player (ID) VALUES (000012);
 
 -- Game tuples that belongs to the 4 developers
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0200, 000002, 'Run Run Run', 4.2, 0.00, /* LOAD_FILE('Run_Run_Run.png'), */ '19-SEP-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0201, 000002, 'Ventosanzap', 3.7, 3.00, /* LOAD_FILE('Ventosanzap.png'), */'22-JAN-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0202, 000002, 'Vagram', 1.2, 20.00, /* LOAD_FILE('Vagram.png'), */ '04-FEB-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0203, 000002, 'Cooky', 3.8, 2.00, /* LOAD_FILE('Cooky.png'), */ '07-APR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 9.90, /* LOAD_FILE('Holdlamis.png'), */ '01-JUN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0200, 000002, 'Run Run Run', 4.2, 0.00, '19-SEP-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0201, 000002, 'Ventosanzap', 3.7, 3.00, '22-JAN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0202, 000002, 'Vagram', 1.2, 20.00, '04-FEB-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0203, 000002, 'Cooky', 3.8, 2.00, '07-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0204, 000002, 'Holdlamis', 4.1, 9.90, '01-JUN-20');
 
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price,/*  Cover,  */UploadDate) VALUES (0300, 000003, 'Rim', null, 0.00, /* LOAD_FILE('Rim.png'), */ '12-FEB-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0301, 000003, 'Road Map', 3.5, 0.00, /* LOAD_FILE('Road_Map.png'), */'21-SEP-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0302, 000003, 'Valkyrie', 4.0, 2.00, /* LOAD_FILE('Valkyrie.png'), */ '23-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0300, 000003, 'Rim', 0, 0.00, '12-FEB-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0301, 000003, 'Road Map', 3.5, 0.00, '21-SEP-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0302, 000003, 'Valkyrie', 4.0, 2.00, '23-APR-20');
 
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover,  */UploadDate) VALUES (0801, 000008, 'So Far So Good', null, 1.00, /* LOAD_FILE('So_Far_So Good.png'), */ '02-SEP-18');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0802, 000008, 'Hold My Beer', 3.0, 0.00, /* LOAD_FILE('Hold_My_Beer.png'), */ '28-SEP-18');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0803, 000008, 'Dwalf and Dungen', 4.0, 1.00, /* LOAD_FILE('Dwalf_and_Dungen.png'), */ '14-JAN-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0804, 000008, 'Snap Da Bug!', 2.7, 0.00, /* LOAD_FILE('Snap_Da_Bug.png'), */'29-MAR-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0805, 000008, 'Vegetation', 1.2, 0.00, /* LOAD_FILE('Vegetation.png'), */ '04-APR-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0806, 000008, 'Who That DUDE', 3.8, 2.00, /* LOAD_FILE('Who_That_DUDE.png'), */ '07-DEC-19');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (0807, 000008, 'Underworld', 4.5, 12.5, /* LOAD_FILE('Underworld.png'), */ '01-JAN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0801, 000008, 'So Far So Good', 0, 1.00, '02-SEP-18');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0802, 000008, 'Hold My Beer', 3.0, 0.00, '28-SEP-18');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0803, 000008, 'Dwalf and Dungen', 4.0, 1.00, '14-JAN-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0804, 000008, 'Snap Da Bug!', 2.7, 0.00, '29-MAR-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0805, 000008, 'Vegetation', 1.2, 0.00, '04-APR-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0806, 000008, 'Who That DUDE', 3.8, 2.00, '07-DEC-19');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (0807, 000008, 'Underworld', 4.5, 12.5, '01-JAN-20');
 
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1100, 000011, 'HELP ME', null, 0.00, /* LOAD_FILE('HELP_ME.png'), */ '29-FEB-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1101, 000011, 'SUB', null, 3.00, /* LOAD_FILE('SUB.png'), */'12-MAR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1102, 000011, 'IM HUNGRY', 2.0, 0.00, /* LOAD_FILE('IM_HUNGRY.png'), */ '05-APR-20');
-INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, /* Cover, */ UploadDate) VALUES (1103, 000011, 'BYE', null, 2.00, /* LOAD_FILE('BYE.png'), */ '05-JUN-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (1100, 000011, 'HELP ME', 0, 0.00, '29-FEB-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (1101, 000011, 'SUB', 0, 3.00, '12-MAR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (1102, 000011, 'IM HUNGRY', 2.0, 0.00, '05-APR-20');
+INSERT INTO Game_uploads (GID, DevID, Name, Rating, Price, UploadDate) VALUES (1103, 000011, 'BYE', 0, 2.00, '05-JUN-20');
 
 --Matching all ratings to respective ranks
 INSERT INTO Game_rate (Rating, Rank) VALUES (5.0,'Excellent');
@@ -327,12 +328,13 @@ INSERT INTO Game_rate (Rating, Rank) VALUES (1.3,'Poor');
 INSERT INTO Game_rate (Rating, Rank) VALUES (1.2,'Poor');
 INSERT INTO Game_rate (Rating, Rank) VALUES (1.1,'Poor');
 INSERT INTO Game_rate (Rating, Rank) VALUES (1.0,'Poor');
+INSERT INTO Game_rate (Rating, Rank) VALUES (0,'No Rate');
 
-INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('1a1','First Game!'/* ,LOAD_FILE('First_Game.png') */);
-INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('3a2','Speed Runner'/* ,LOAD_FILE('Speed_Runner.png') */);
-INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('2s1','ALL KILL'/* ,LOAD_FILE('ALL_KILL.png') */);
-INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('7f4','King of the Land'/* ,LOAD_FILE('King_of_the_Land.png') */);
-INSERT INTO Achievement (AID, Name/* , Badge */) VALUES ('84r','FOB'/* ,LOAD_FILE('FOB.png') */);
+INSERT INTO Achievement (AID, Name) VALUES ('1a1','First Game!');
+INSERT INTO Achievement (AID, Name) VALUES ('3a2','Speed Runner');
+INSERT INTO Achievement (AID, Name) VALUES ('2s1','ALL KILL');
+INSERT INTO Achievement (AID, Name) VALUES ('7f4','King of the Land');
+INSERT INTO Achievement (AID, Name) VALUES ('84r','FOB');
 
 INSERT INTO Type (Name) VALUES ('Action');
 INSERT INTO Type (Name) VALUES ('RPG');
@@ -476,3 +478,10 @@ INSERT INTO isOf (GID, Type) VALUES (1103, 'Simulation');
 
 INSERT INTO mentions (ArtID, GID) VALUES ('diqw78f', 0807);
 INSERT INTO mentions (ArtID, GID) VALUES ('987dshkjg', 0302);
+
+CREATE SEQUENCE GID_generate
+	START WITH 20000
+  	INCREMENT BY 1
+  	CACHE 5;
+
+

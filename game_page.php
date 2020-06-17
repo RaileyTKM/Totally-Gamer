@@ -50,6 +50,17 @@
 <!--end of Navigation bar-->
 <div class="header">Game Collections</div>
 
+<?php
+    session_save_path("/tmp");
+    session_start();
+    $conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
+    if (!$conn) {
+        $e = oci_error();   // For oci_connect errors do not pass a handle
+        debug_to_console("Database is NOT Connected");
+        trigger_error(htmlentities($e['message']), E_USER_ERROR);
+    }
+    debug_to_console("Database is Connected");
+?>
 
 <form method="post">
     <select name="option">
@@ -63,16 +74,6 @@
 
 
 <?php
-    session_save_path("/tmp");
-	session_start();
-    $conn = OCILogon("ora_reyred", "a74388869", "dbhost.students.cs.ubc.ca:1522/stu");
-    if (!$conn) {
-        $e = oci_error();   // For oci_connect errors do not pass a handle
-        debug_to_console("Database is NOT Connected");
-        trigger_error(htmlentities($e['message']), E_USER_ERROR);
-    }
-    debug_to_console("Database is Connected");
-
     if (isset($_SESSION['userid'])) {
         $action = "purchase_game.php";
     } else {
@@ -109,9 +110,9 @@ function searchGame(){
 function searchByType(){
     global $conn;
     global $action;
-    $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
-            FROM UserID u, Game_uploads g, isOf i
-            WHERE g.DevID = u.ID AND i.GID = g.GID AND i.Type = :tp_bv
+    $sql = "SELECT g.GID, g.Name, u.Nickname, g.Price, g.Rating, r.Rank
+            FROM UserID u, Game_uploads g, isOf i, Game_rate r
+            WHERE g.DevID = u.ID AND i.GID = g.GID AND i.Type = :tp_bv AND r.rating = g.rating
             ORDER BY g.Name";
 
     $found = oci_parse($conn, $sql);
@@ -129,18 +130,12 @@ function searchByType(){
     }
 
     echo "<table>";
-    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th></tr>";
+    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th><th>Rank</th></tr>";
     // Fetch data
     while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
-        if ($row[3] == null) {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        } else {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        }
+        echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" .$row[4]. '</td><td>'.$row[5]. '</td>
+        <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+        </tr>';
     }
     // Store userid to server and pass to next page
     echo "</table>";
@@ -150,13 +145,13 @@ function searchByType(){
 function searchByDev(){
     global $conn;
     global $action;
-    $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
-            FROM UserID u, Game_uploads g
-            WHERE g.DevID = u.ID AND u.Nickname = :devn_bv
-            ORDER BY g.Name";
+    $sql = "SELECT g.GID, g.Name, u.Nickname, g.Price, g.Rating, r.Rank
+            FROM UserID u, Game_uploads g, Game_rate r
+            WHERE g.DevID = u.ID AND u.Nickname LIKE :devn_bv AND r.rating = g.rating
+            ORDER BY u.Nickname, g.Name";
 
     $found = oci_parse($conn, $sql);
-    $devn = $_POST['content'];
+    $devn = "%".$_POST['content']."%";
     oci_bind_by_name($found, ":devn_bv", $devn);
 
     // Execute sql
@@ -170,18 +165,12 @@ function searchByDev(){
     }
 
     echo "<table>";
-    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th></tr>";
+    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th><th>Rank</th></tr>";
     // Fetch data
     while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
-        if ($row[3] == null) {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        } else {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        }
+        echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" .$row[4]. '</td><td>'.$row[5]. '</td>
+        <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+        </tr>';
     }
     // Store userid to server and pass to next page
     echo "</table>";
@@ -191,9 +180,9 @@ function searchByDev(){
 function searchByName(){
     global $conn;
     global $action;
-    $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
-            FROM UserID u, Game_uploads g
-            WHERE g.DevID = u.ID AND g.Name LIKE :gn_bv
+    $sql = "SELECT g.GID, g.Name, u.Nickname, g.Price, g.Rating, r.Rank
+            FROM UserID u, Game_uploads g, Game_rate r
+            WHERE g.DevID = u.ID AND g.Name LIKE :gn_bv AND r.rating = g.rating
             ORDER BY g.Name";
 
     $found = oci_parse($conn, $sql);
@@ -211,18 +200,12 @@ function searchByName(){
     }
 
     echo "<table>";
-    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th></tr>";
+    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th><th>Rank</th></tr>";    
     // Fetch data
     while ($row = OCI_Fetch_Array($found, OCI_BOTH)) {
-        if ($row[3] == null) {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        } else {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        }
+        echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" .$row[4]. '</td><td>'.$row[5]. '</td>
+        <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+        </tr>';
     }
     // Store userid to server and pass to next page
     echo "</table>";
@@ -233,9 +216,9 @@ function searchByName(){
 function displayAllGame(){
     global $conn;
     global $action;
-    $sql = "SELECT g.GID, g.Name, u.Nickname, g.Price, g.Rating
-            FROM UserID u, Game_uploads g
-            WHERE g.DevID = u.ID
+    $sql = "SELECT g.GID, g.Name, u.Nickname, g.Price, g.Rating, r.Rank
+            FROM UserID u, Game_uploads g, Game_rate r
+            WHERE g.DevID = u.ID AND r.rating=g.rating
             ORDER BY g.Name";
 
     $allGames = oci_parse($conn, $sql);
@@ -251,19 +234,13 @@ function displayAllGame(){
     }
     echo "<table>";
 
-    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th></tr>";
+    echo "<tr><th>Game</th><th>Developer</th><th>Price</th><th>Rating</th><th>Rank</th></tr>";
     // Fetch data
 
     while ($row = OCI_Fetch_Array($allGames, OCI_BOTH)) {
-        if ($row[4] == null) {
-            echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . '-' . '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        } else {
-            echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" .$row[4]. '</td>
-            <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
-            </tr>';
-        }
+        echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" .$row[4]. '</td><td>'.$row[5]. '</td>
+        <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
+        </tr>';
     }
     // Store userid to server and pass to next page
     echo "</table>";

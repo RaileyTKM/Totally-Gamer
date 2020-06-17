@@ -62,16 +62,21 @@ $(function(){
 	}
 	debug_to_console("Database is Connected");
 
+	if ($_SESSION['userRole'] == 'Developer') {
+		OCILogoff($conn);
+		header('Location: game_created.php');
+	}
+
     displayGame();
-    ?>
+?>
 
-    <form method="POST"> <!--refresh page when submitted-->
-        <input type="submit" value="Display Game Record" name="display_record"></p>
-    </form>
+<form method="POST"> <!--refresh page when submitted-->
+	<input type="submit" value="Display Game Record" name="display_record"></p>
+</form>
 
-    <form method="POST" > 
-        <input type="submit" value="Display My Achievement" name="display_achievement"></p>
-    </form>
+<form method="POST" > 
+	<input type="submit" value="Display My Achievement" name="display_achievement"></p>
+</form>
 
 
 <?php
@@ -275,6 +280,7 @@ $(function(){
 			debug_to_console($e);
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 		}
+		
 		$num = OCI_Fetch_Array($numGames, OCI_BOTH);
 		echo "Total Game Owned: ".$num[0]."<br>";
 	
