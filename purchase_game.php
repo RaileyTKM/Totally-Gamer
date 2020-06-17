@@ -51,7 +51,9 @@
 <?php
 	//extract userid from login page
     session_save_path("/tmp");
-	session_start();
+    session_start();
+
+    $gid = $_GET['buy'];
 
 	$conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
 	if (!$conn) {
@@ -62,15 +64,42 @@
 	debug_to_console("Database is Connected");
 
 	//display purchase information 
-	gameInfo();
+	gameInfo($gid);
 	
-	function gameInfo() {
-		global $conn;
+?>
+
+<div class='tname'>Payment Methods</div>
+<form method="POST"> <!--refresh page when submitted -->
+    <input type="submit" value="PayPal" name="paypal"></p>
+
+    <input type="submit" value="Credit Card" name="credit"></p>
+
+    <input type="submit" value="Debit Card" name="debit"></p>
+</form>
+
+
+<?php
+	//insert purchase into database, jump to the updated game page
+    if (isset($_POST['paypal'])) {
+        $stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'PayPal')");
+        purchase($stid,$gid);
+	} else if (isset($_POST['credit'])) {
+        $stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'CreditCard')");
+        purchase($stid,$gid);
+    } else if (isset($_POST['debit'])) {
+        $stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'DebitCard')");
+        purchase($stid,$gid);
+    }
+
+    OCILogoff($conn);
+
+	function gameInfo($gid) {
+        global $conn;
 
         $stid = oci_parse($conn, 'SELECT g.Name, u.Nickname, g.Price
         FROM Game_uploads g, UserID u
 		WHERE g.GID = :gid AND g.DevID = u.ID');
-		$gid = $_GET['buy'];
+
 
 		$ba = array(':gid' => $gid);
 		foreach ($ba as $key => $val) {
@@ -100,61 +129,52 @@
 		}
 		echo "</table>";
 		oci_free_statement($stid);
-	}
-?>
-<div class='tname'>Payment Methods</div>
-<form action="game_owned.php" method="POST"> <!--refresh page when submitted-->
-    <input type="submit" value="PayPal" name="paypal"></p>
+    }
+    
 
-    <input type="submit" value="Credit Card" name="credit"></p>
+    function purchase($stid,$gid){
+        global $conn;
+        $rate = oci_parse($conn, "INSERT INTO rates VALUES (:userid, :gid, null)");
 
-    <input type="submit" value="Debit Card" name="debit"></p>
-</form>
+        $userid = $_SESSION['userid'];
 
+        $ba = array(':userid' => $userid, ':gid' => $gid);
+        foreach ($ba as $key => $val) {
+            oci_bind_by_name($stid, $key, $ba[$key]);
+            oci_bind_by_name($rate, $key, $ba[$key]);
+        }
 
-<?php
+    
+        if (!$stid) {
+            $e = oci_error($conn);
+            debug_to_console($e);
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
 
-	//insert purchase into database, jump to the updated game page
-    if (isset($_POST['paypal'])) {
-        $stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'PayPal')");
-	} else if (isset($_POST['credit'])) {
-		$stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'CreditCard')");
-    } else if (isset($_POST['debit'])) {
-		$stid = oci_parse($conn, "INSERT INTO Purchases_profits_detail VALUES (:userid, :gid, SYSDATE, 'DebitCard')");
-	}
+        $z = OCIExecute($stid, OCI_NO_AUTO_COMMIT);
+        $r = OCIExecute($rate, OCI_NO_AUTO_COMMIT);
 
-	$rate = oci_parse($conn, "INSERT INTO rates VALUES (:userid, :gid, null)");
+        if (!$r) {
+            $e = oci_error($rate);
+            debug_to_console($e);
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+        if (!$z) {
+            $e = oci_error($stid);
+            debug_to_console($e);
+            trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        }
+        $r = oci_commit($conn);
+        if (!$r) {
+            $e = oci_error($conn);
+            trigger_error(htmlentities($e['message']), E_USER_ERROR);
+        }
+        oci_free_statement($stid);
+        oci_free_statement($rate);
+        OCILogoff($conn);
+        header('Location: https://www.students.cs.ubc.ca/~zpengwei/game_owned.php');
+    }
 
-	$gid = $_GET['buy'];
-	$userid = $_SESSION['userid'];
-	$ba = array(':userid' => $userid, ':gid' => $gid);
-	foreach ($ba as $key => $val) {
-		oci_bind_by_name($stid, $key, $ba[$key]);
-	}
-
-	if (!$stid) {
-
-		$e = oci_error($conn);
-		debug_to_console($e);
-		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-	}
-
-	$r = OCIExecute($stid, OCI_NO_AUTO_COMMIT);
-	$r = OCIExecute($rate, OCI_NO_AUTO_COMMIT);
-
-	if (!$r) {
-		$e = oci_error($stid);
-		debug_to_console($e);
-		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-	}
-	$r = oci_commit($conn);
-	if (!$r) {
-		$e = oci_error($conn);
-		trigger_error(htmlentities($e['message']), E_USER_ERROR);
-	}
-	oci_free_statement($stid);
-	oci_free_statement($rate);
-	OCILogoff($conn);
 	
 
     

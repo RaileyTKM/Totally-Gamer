@@ -57,7 +57,7 @@
         <option value="GameName">Game Name</option>
         <option value="Developer">Developer</option>
     </select>
-    <input type="text" name = "content" required="required" placeholder="Search..">
+    <input type="text" name = "content" placeholder="Search..">
     <button type="submit" class="btn btn-primary btn-block btn-large" name="search">Search</button>
 </form>
 
@@ -80,7 +80,11 @@
     }
 
     if (isset($_POST['search'])) {
-        searchGame();
+        if("" != trim($_POST['content'])){
+            searchGame(); 
+        }else{
+            displayAllGame();
+        }
     }
     else {
         displayAllGame();
@@ -229,7 +233,7 @@ function searchByName(){
 function displayAllGame(){
     global $conn;
     global $action;
-    $sql = "SELECT g.Name, u.Nickname, g.Price, g.Rating
+    $sql = "SELECT g.GID, g.Name, u.Nickname, g.Price, g.Rating
             FROM UserID u, Game_uploads g
             WHERE g.DevID = u.ID
             ORDER BY g.Name";
@@ -251,12 +255,12 @@ function displayAllGame(){
     // Fetch data
 
     while ($row = OCI_Fetch_Array($allGames, OCI_BOTH)) {
-        if ($row[3] == null) {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . '-' . '</td>
+        if ($row[4] == null) {
+            echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . '-' . '</td>
             <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         } else {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td>
+            echo "<tr><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" .$row[4]. '</td>
             <td><form action='.$action.' method="get"><button type="submit" name="buy" value='.$row[0].' >Buy</button></form></td>
             </tr>';
         }

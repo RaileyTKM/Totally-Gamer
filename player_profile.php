@@ -120,6 +120,7 @@ $(function(){
 
         if (isset($_POST['logout'])) {
             session_destroy();
+            header('Location: https://www.students.cs.ubc.ca/~zpengwei/login_page.php'); 
         }
 
 
