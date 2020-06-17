@@ -114,13 +114,13 @@ $(function(){
                     $_SESSION['userBirthday'] = $birthday;
                     oci_free_statement($stid);
                     OCILogoff($conn);
-                    header('Location: https://www.students.cs.ubc.ca/~zpengwei/player_profile.php'); 
+                    header('Location: player_profile.php'); 
 
         }
 
         if (isset($_POST['logout'])) {
             session_destroy();
-            header('Location: https://www.students.cs.ubc.ca/~zpengwei/login_page.php'); 
+            header('Location: login_page.php'); 
         }
 
 

@@ -172,7 +172,7 @@
         oci_free_statement($stid);
         oci_free_statement($rate);
         OCILogoff($conn);
-        header('Location: https://www.students.cs.ubc.ca/~zpengwei/game_owned.php');
+        header('Location: game_owned.php');
     }
 
 	

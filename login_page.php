@@ -81,7 +81,7 @@
                     $_SESSION['userRole'] = $role;
                     oci_free_statement($stid);
                     OCILogoff($conn);
-                    header('Location: https://www.students.cs.ubc.ca/~zpengwei/home_page.php');
+                    header('Location: home_page.php');
                     }else{
                         $message = "Wrong Username/Password";
                         echo "<script type='text/javascript'>alert('$message');</script>";
