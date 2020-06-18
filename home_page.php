@@ -28,6 +28,12 @@
 			text-align: center;
 			font-size: 200%;
 		}
+		.tbody{
+			margin : 0%;
+			text-align: center;
+			font-size: 120%;
+			color: #111542;
+		}
 		table, th, td {
 		border: 1px solid black;
 		}
@@ -54,55 +60,16 @@ $(function(){
 <div class="header">Hello  <?php echo $_SESSION['userName'];?> </div>
 <div class="header">Welcome to Totally Gamer</div>
 
-<h1>Average playtime for each game</h1>
+<h1>Popular Games</h1>
+<div class="tbody">These games are purchased by EVERY player</div>
 <?php
-    $conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
-    if (!$conn) {
-        $e = oci_error();   // For oci_connect errors do not pass a handle
-        debug_to_console("Database is NOT Connected");
-        trigger_error(htmlentities($e['message']), E_USER_ERROR);
-    }
+	$conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
+	if (!$conn) {
+		$e = oci_error();   // For oci_connect errors do not pass a handle
+		debug_to_console("Database is NOT Connected");
+		trigger_error(htmlentities($e['message']), E_USER_ERROR);
+	}
 	debug_to_console("Database is Connected");
-
-    $sql = "SELECT Name, Rating, Price, a
-				FROM Game_uploads g
-				INNER JOIN
-					(SELECT GID, AVG(AccumPlayTime) a
-						FROM plays 
-						GROUP BY GID) t
-				ON g.GID=t.GID
-				ORDER BY a DESC";
-
-
-    $std = oci_parse($conn, $sql);
-
-    // Execute sql
-    $r = oci_execute($std, OCI_DEFAULT);
-
-    if (!$r) {
-
-        $e = oci_error($std);
-        debug_to_console($e);
-        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-    }
-
-    echo "<table>";
-    echo "<tr><th>Game</th><th>Rating</th><th>Price</th><th>Average Playtime</th></tr>";    
-    // Fetch data
-    while ($row = OCI_Fetch_Array($std, OCI_BOTH)) {
-        echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td></tr>';
-    }
-    // Store userid to server and pass to next page
-    echo "</table>";
-
-    oci_free_statement($std);
-
-
-?>
-
-
-<h1>Games every player have</h1>
-<?php
 
 	$sql = "SELECT g.Name
 	FROM Game_uploads g
@@ -128,7 +95,9 @@ $(function(){
 
 	// Fetch data
 	while ($row = OCI_Fetch_Array($std, OCI_BOTH)) {
-		echo $row[0]; 
+		echo "<table>";
+		echo "<tr><th>".$row[0]."</th></tr>"; 
+		echo "</table>";
 	}
 	oci_free_statement($std);
 
@@ -141,6 +110,46 @@ $(function(){
 		echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
 	}
 ?>
+
+<h1>Our Game Statistics</h1>
+<div class="tbody">Average playtime for each game</div>
+<?php
+    $sql = "SELECT Name, Rating, Price, a
+				FROM Game_uploads g
+				INNER JOIN
+					(SELECT GID, AVG(AccumPlayTime) a
+						FROM plays 
+						GROUP BY GID) t
+				ON g.GID=t.GID
+				ORDER BY a DESC";
+
+
+    $std = oci_parse($conn, $sql);
+
+    // Execute sql
+    $r = oci_execute($std, OCI_DEFAULT);
+
+    if (!$r) {
+
+        $e = oci_error($std);
+        debug_to_console($e);
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+    }
+
+    echo "<table>";
+    echo "<tr><th>Game</th><th>Rating</th><th>Price/CA$</th><th>Average Playtime</th></tr>";    
+    // Fetch data
+    while ($row = OCI_Fetch_Array($std, OCI_BOTH)) {
+        echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td></tr>';
+    }
+    // Store userid to server and pass to next page
+    echo "</table>";
+
+    oci_free_statement($std);
+
+
+?>
+
 
 </body>
 </html>
