@@ -137,7 +137,7 @@ $(function(){
     }
 
     echo "<table>";
-    echo "<tr><th>Game</th><th>Rating</th><th>Price/CA$</th><th>Average Playtime</th></tr>";    
+    echo "<tr><th>Game</th><th>Rating</th><th>Price/CA$</th><th>Average Playtime/hr</th></tr>";    
     // Fetch data
     while ($row = OCI_Fetch_Array($std, OCI_BOTH)) {
         echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td></tr>';
