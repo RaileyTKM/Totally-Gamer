@@ -105,8 +105,12 @@ $(function(){
     function createGame() {
         global $conn;
 
-        $stid = oci_parse($conn, 'INSERT INTO Game_uploads VALUES (GID_generate.nextval, :userid, :gname, 0, :price, SYSDATE)');
-        $isof = oci_parse($conn, 'INSERT INTO isOf VALUES (GID_generate.currval, :gtype)');
+        $sql = '
+        BEGIN 
+            INSERT INTO Game_uploads VALUES (GID_generate.nextval, :userid, :gname, 0, :price, SYSDATE);
+            INSERT INTO isOf VALUES (GID_generate.currval, :gtype);
+        END;';
+        $stid = oci_parse($conn, $sql);
 
         $userid = $_SESSION['userid'];
         $gtype = $_POST['type'];
@@ -119,14 +123,13 @@ $(function(){
 		foreach ($ba as $key => $val) {
 			oci_bind_by_name($stid, $key, $ba[$key]);
         }
-        
+
 		if (!$stid) {
 			$e = oci_error($conn);
 			debug_to_console($e);
 			trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 		}
         $r = OCIExecute($stid, OCI_DEFAULT);
-        $s = OCIExecute($stid, OCI_DEFAULT);
 		if (!$r) {
 			$e = oci_error($stid);
 			debug_to_console($e);
@@ -138,7 +141,6 @@ $(function(){
             trigger_error(htmlentities($e['message']), E_USER_ERROR);
         }
         oci_free_statement($stid);
-        oci_free_statement($isof);
         OCILogoff($conn);
         header('Location: game_created.php');
     }

@@ -357,6 +357,7 @@ INSERT INTO Achievement (AID, Name) VALUES ('3a2','Speed Runner');
 INSERT INTO Achievement (AID, Name) VALUES ('2s1','ALL KILL');
 INSERT INTO Achievement (AID, Name) VALUES ('7f4','King of the Land');
 INSERT INTO Achievement (AID, Name) VALUES ('84r','FOB');
+INSERT INTO Achievement (AID, Name) VALUES ('245','Top Notch');
 INSERT INTO Achievement (AID, Name) VALUES ('1b1','DEMO');
 
 INSERT INTO Type (Name) VALUES ('Action');
@@ -467,6 +468,7 @@ INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) V
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 1102, '11-MAY-20', 'DebitCard');
 
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000002, '1a1', '19-SEP-19');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000002, '245', '19-JAN-20');
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000003, '1a1', '12-FEB-19');
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000008, '1a1', '02-SEP-18');
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000011, '1a1', '29-FEB-20');
@@ -477,6 +479,7 @@ INSERT INTO associates (GID, AID) VALUES (0200, '3a2');
 INSERT INTO associates (GID, AID) VALUES (0302, '2s1');
 INSERT INTO associates (GID, AID) VALUES (0301, '7f4');
 INSERT INTO associates (GID, AID) VALUES (1101, '84r');
+INSERT INTO associates (GID, AID) VALUES (1102, '245');
 INSERT INTO associates (GID, AID) VALUES (0805, '1b1');
 
 INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('efe1b189-ad63-4e3e', 000004, 0805,
