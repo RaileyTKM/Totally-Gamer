@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1">
+	<title>Home</title>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<link rel="stylesheet" href="navStyle.css">
+	<style>
+		html {
+			background: url(UBC.jpg) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+		.flex-container {
+    		display: flex;
+			align-items: center;
+			flex-direction: column;
+			justify-content: center;
+			flex-wrap: wrap;
+
+		}
+		body {
+		text-align: center;
+		}
+		
+		table { display: inline-block; text-align: left; font-size:20px; }
+		.header{
+		margin-top: 1%;
+		font-size: 400%;
+		text-align: center;
+		margin-bottom: 3%;
+		}
+		.tname{
+			margin : 1%;
+			text-align: center;
+			font-size: 200%;
+		}
+		table, th, td {
+		border: 1px solid black;
+        }
+        .card-container {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 150px;
+    perspective: 600px;
+    position: relative;
+    width: 150px;
+
+    }
+    .card {
+        height: 100%;
+        position: absolute;
+        transform-style: preserve-3d;
+        transition: all 1s ease-in-out;
+        width: 100%;
+    }
+    .card:hover {
+        transform: rotateY(180deg);
+    }
+    .card .side {
+        backface-visibility: hidden;
+        background: #98FB98;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+    }
+    .card .back {
+        background: #111111;
+        text-align:center;
+        color: whitesmoke;
+        transform: rotateY(180deg);
+    }
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .intro{
+        color: darkcyan;
+	}
+	img {
+    position: relative;
+    z-index: 1;
+}
+	</style>
+</head>
+<body>
+<!--Navigation bar-->
+<div id="nav-placeholder">
+
+</div>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("navbar.html");
+});
+</script>
+<!--end of Navigation bar-->
+<div class="flex-container">
+    <div class="card-container">
+        <div class="card">
+            <div class="side"><img src= 1.jpg alt="Pengwei Zhou" width=100% height=100%></div>
+            <div class="side back"><div class="centered">Pengwei Zhou</div></div>
+        </div>
+    </div>
+    <div class="intro">.........................................</div>
+    <a href="https://store.steampowered.com/about/" target="_blank">INSPIRED BY STEAM</a>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/dAUX2xalEuU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</div>
+
+</body>
+</html>

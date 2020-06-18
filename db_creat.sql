@@ -376,19 +376,19 @@ INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALU
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('Jessica fanclub', 'Visual Novel', 000009, '20-FEB-20');
 INSERT INTO Forum_category_creates  (Name, Category ,CreatorID, CreateDate) VALUES ('Majo No Ie', 'RPG', 000001, '18-DEC-19');
 
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('a100z567', 'FIFA is Da BEST', 000004, 'Anyone having the same bug?', to_date('2020-01-04:23:02:34','YYYY-MM-DD:HH24:MI:SS'), 21,
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('a100z567', 'FIFA is Da BEST', 000004, 'Anyone having the same bug?', to_date('2020-01-04:23:02:34','YYYY-MM-DD:HH24:MI:SS'), 21, 
 	'This notification keeps popping up after the welcome screen and I can''t login the game: "ERROR 0034 Configuration Missmatch 27688doDFy879"');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('diqw78f', 'Jessica fanclub', 000007, 'Amazing fanart found on Twitter', to_date('2020-03-03:16:33:04','YYYY-MM-DD:HH24:MI:SS'), 68,
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('diqw78f', 'Jessica fanclub', 000007, 'Amazing fanart found on Twitter', to_date('2020-03-03:16:33:04','YYYY-MM-DD:HH24:MI:SS'), 68, 
 	'Chekcout this artist @kiminodaikon on Twitter. His work is so sickkkkk');
 INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('f8hf92wd', 'Is Ubisoft bankrupt yet', 000008, 'My thoughts on the new AC update', to_date('2020-01-23:00:18:20','YYYY-MM-DD:HH24:MI:SS'), 5, 'Blablabla…');
 INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('xcvhhy93', 'FIFA is Da BEST', 000002, 'The FULLEST character analysis ever', to_date('2019-12-05:09:20:00','YYYY-MM-DD:HH24:MI:SS'), 2334, 'Blablabla…');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('987dshkjg', 'Majo No Ie', 000001, 'UWU Happy new year peasants', to_date('2020-01-01:00:11:39','YYYY-MM-DD:HH24:MI:SS'), 12,
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('987dshkjg', 'Majo No Ie', 000001, 'UWU Happy new year peasants', to_date('2020-01-01:00:11:39','YYYY-MM-DD:HH24:MI:SS'), 12, 
 	'Whassup just checking on yall guys. Happy new year folks');
-
+	
 
 INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567','f45j', 000002, to_date('2020-01-05:00:06:29','YYYY-MM-DD:HH24:MI:SS'),
 	'Many people have been having the same bug recently, and EA said they are working on this. It is likely that they will release a patch by today. ');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567', 'd78', 000004, to_date('2020-01-05:00:08:02','YYYY-MM-DD:HH24:MI:SS'),
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567', 'd78', 000004, to_date('2020-01-05:00:08:02','YYYY-MM-DD:HH24:MI:SS'), 
 	'WTH alright. Not surprised cuz it''s EA man. ');
 INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('987dshkjg', 's45b', 000001, to_date('2020-01-01:01:11:39','YYYY-MM-DD:HH24:MI:SS'),'Y u so fast HUH?');
 INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '6823', 000003, to_date('2020-01-07:20:09:40','YYYY-MM-DD:HH24:MI:SS'),
@@ -451,7 +451,17 @@ INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) V
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000009, 0805, '31-DEC-19', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000010, 0805, '31-DEC-19', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0805, '31-DEC-19', 'CreditCard');
+
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000004, 0200, '13-DEC-19', 'PayPal');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000006, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000007, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000009, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (0000010, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (0000012, 0200, '13-DEC-19', 'PayPal');
+
+
+
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0802, '14-JAN-20', 'PayPal');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0302, '04-MAY-20', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 1102, '11-MAY-20', 'DebitCard');
@@ -481,13 +491,13 @@ INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('c8a918
 	'SUB DUDE 2 POINTS 4 U', to_date('2020-05-11:14:31:44','YYYY-MM-DD:HH24:MI:SS'));
 
 INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0805, to_date('2020-01-04:12:38:56','YYYY-MM-DD:HH24:MI:SS'), 'I think so too. Thx for playing');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000002, 0200, to_date('2019-12-15:10:34:51','YYYY-MM-DD:HH24:MI:SS'),
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000002, 0200, to_date('2019-12-15:10:34:51','YYYY-MM-DD:HH24:MI:SS'), 
 	'Thank you! I have made another game of the same type but less demanding. You can check out my homepage for that!');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0802, to_date('2020-01-17:02:28:04','YYYY-MM-DD:HH24:MI:SS'),
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0802, to_date('2020-01-17:02:28:04','YYYY-MM-DD:HH24:MI:SS'), 
 	'Thx for telling me that. It''s fixed now. Enjoy. ');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000003, 0302, to_date('2020-05-04:16:30:07','YYYY-MM-DD:HH24:MI:SS'),
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000003, 0302, to_date('2020-05-04:16:30:07','YYYY-MM-DD:HH24:MI:SS'), 
 	'Well thank you very much! I put a lot more effort into designing this one than I ever did. I am currently working on the sequal and it is going to be a 3D game. I will definitely notify you when it comes out!');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000012, 0302, to_date('2020-05-04:17:02:59','YYYY-MM-DD:HH24:MI:SS'),
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000012, 0302, to_date('2020-05-04:17:02:59','YYYY-MM-DD:HH24:MI:SS'), 
 	'WOW bring the work on man. Looking forward to that. ');
 
 INSERT INTO favorites (UserID, Type) VALUES (000001, 'Action');
