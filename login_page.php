@@ -17,6 +17,12 @@
 
         session_save_path("/tmp");
         session_start();
+        
+        if (isset($_SESSION['userid'])) {
+            $error = "You have already logged in";
+            echo "<script type='text/javascript'>alert('$error');</script>";
+            echo "<script type='text/javascript'>window.location.replace('home_page.php');</script>";
+        }
 
         if(isset($_POST['login'])){
                 $conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
