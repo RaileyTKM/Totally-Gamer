@@ -21,7 +21,7 @@ drop table Comment_writesTo cascade constraints;
 drop table replies cascade constraints;
 drop table favorites cascade constraints;
 drop table isOf cascade constraints;
--- drop table mentions cascade constraints;
+drop table mentions cascade constraints;
 drop sequence GID_generate;
 
 CREATE TABLE UserID (
@@ -39,12 +39,12 @@ CREATE TABLE Developer (
 	YearsOfExp	INT,
 	TPurchase	INT,
 	TProfit		DECIMAL(10,2),
-	FOREIGN KEY (ID) REFERENCES UserID (ID) ON DELETE CASCADE
+FOREIGN KEY (ID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE Player (
 	ID	INT	PRIMARY KEY ,
-	FOREIGN KEY (ID) REFERENCES UserID (ID)
+FOREIGN KEY (ID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE Game_uploads (
@@ -55,7 +55,7 @@ CREATE TABLE Game_uploads (
 	Price		DECIMAL(10,2),
 	--Cover
 	UploadDate	DATE,
-	FOREIGN KEY (DevID) REFERENCES Developer (ID)
+FOREIGN KEY (DevID) REFERENCES Developer (ID)
 );
 
 CREATE TABLE Game_rate (
@@ -90,7 +90,7 @@ CREATE TABLE ForumArticle_posts (
 	Time		TIMESTAMP(2),
 	Views		INT,
 	Content	VARCHAR(2000)	NOT NULL,
-	FOREIGN KEY (Forum) REFERENCES Forum_category_creates (Name) ON DELETE CASCADE,
+	FOREIGN KEY (Forum) REFERENCES Forum_category_creates (Name),
 	FOREIGN KEY (AuthorID) REFERENCES UserID (ID)
 );
 
@@ -101,7 +101,7 @@ CREATE TABLE Follow_up_posts (
 	Time		TIMESTAMP(2),
 	Content	VARCHAR(2000)	NOT NULL,
 	PRIMARY KEY (ArtID, FID),
-	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts(ArtID) ON DELETE CASCADE,
+	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts(ArtID),
 	FOREIGN KEY (AuthorID) REFERENCES UserID (ID)
 );
 
@@ -119,7 +119,9 @@ CREATE TABLE rates (
 	Rating		INT,
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player (ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads (GID) ON DELETE CASCADE
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE views (
@@ -128,7 +130,9 @@ CREATE TABLE views (
 	Time		TIMESTAMP(2),
 	PRIMARY KEY (PlayerID, GID, Time),
 FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-FOREIGN KEY (GID) REFERENCES Game_uploads(GID) ON DELETE CASCADE
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE plays (
@@ -139,7 +143,9 @@ CREATE TABLE plays (
 	AccumScore		INT,
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID) ON DELETE CASCADE
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE GameRecord_recordedTo (
@@ -150,7 +156,9 @@ CREATE TABLE GameRecord_recordedTo (
 	Score		INT,
 	PRIMARY KEY (PlayerID, GID, StartTime),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID) ON DELETE CASCADE
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 -- CREATE TABLE Purchases_profits_records (
@@ -169,7 +177,9 @@ CREATE TABLE Purchases_profits_detail (
 	PayMethod	VARCHAR(10),
 	PRIMARY KEY (PlayerID, GID),
 	FOREIGN KEY (PlayerID) REFERENCES Player(ID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID) ON DELETE CASCADE
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
 );
 
 CREATE TABLE achieves (
@@ -185,7 +195,9 @@ CREATE TABLE associates (
 	GID	INT,
 	AID	VARCHAR(10),
 	PRIMARY KEY (GID, AID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads (GID) ON DELETE CASCADE,
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (AID) REFERENCES Achievement(AID)
 );
 
@@ -209,7 +221,9 @@ CREATE TABLE replies (
 	Time		TIMESTAMP(2),
 	Content	VARCHAR(2000),
 	PRIMARY KEY (UserID, GID),
-	FOREIGN KEY (GID) REFERENCES Game_uploads(GID) ON DELETE CASCADE,
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (UserID) REFERENCES UserID (ID)
 );
 
@@ -225,15 +239,20 @@ CREATE TABLE isOf (
 	GID		INT,
 	Type		VARCHAR(20),
 	PRIMARY KEY (GID, Type),
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE,
 	FOREIGN KEY (Type) REFERENCES Type (Name)
 );
 
--- CREATE TABLE mentions (
--- 	ArtID		VARCHAR(10),
--- 	GID		INT,
--- 	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts (ArtID),
--- 	FOREIGN KEY (GID) REFERENCES Game_uploads(GID) ON DELETE CASCADE
--- );
+CREATE TABLE mentions (
+	ArtID		VARCHAR(10),
+	GID		INT,
+	FOREIGN KEY (ArtID) REFERENCES ForumArticle_posts (ArtID),
+	FOREIGN KEY (GID)
+		REFERENCES Game_uploads (GID)
+		ON DELETE CASCADE
+);
 
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000001, 'Harrison', 'Harry123', 'Male', '17-DEC-88', '03-JUN-18', 'Player');
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000002, 'Omaha', 'Password', 'Male', '22-AUG-98', '01-SEP-19', 'Developer');
@@ -338,6 +357,7 @@ INSERT INTO Achievement (AID, Name) VALUES ('3a2','Speed Runner');
 INSERT INTO Achievement (AID, Name) VALUES ('2s1','ALL KILL');
 INSERT INTO Achievement (AID, Name) VALUES ('7f4','King of the Land');
 INSERT INTO Achievement (AID, Name) VALUES ('84r','FOB');
+INSERT INTO Achievement (AID, Name) VALUES ('1b1','DEMO');
 
 INSERT INTO Type (Name) VALUES ('Action');
 INSERT INTO Type (Name) VALUES ('RPG');
@@ -354,22 +374,23 @@ INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALU
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('Animal Crossing Marketplace', 'Simulation', 000002, '02-OCT-2019');
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('Is Ubisoft bankrupt yet', 'RPG', 000004, '25-OCT-19');
 INSERT INTO Forum_category_creates  (Name, Category, CreatorID, CreateDate) VALUES ('Jessica fanclub', 'Visual Novel', 000009, '20-FEB-20');
-INSERT INTO Forum_category_creates  (Name, Category ,CreatorID, CreateDate) VALUES ('Majo No Ie', 'RPG', 000008, '18-DEC-19');
+INSERT INTO Forum_category_creates  (Name, Category ,CreatorID, CreateDate) VALUES ('Majo No Ie', 'RPG', 000001, '18-DEC-19');
 
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('a100z567', 'FIFA is Da BEST', 000004, 'Anyone having the same bug?', to_date('2020-01-04:23:02:34','YYYY-MM-DD:HH24:MI:SS'), 21, 
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('a100z567', 'FIFA is Da BEST', 000004, 'Anyone having the same bug?', to_date('2020-01-04:23:02:34','YYYY-MM-DD:HH24:MI:SS'), 21,
 	'This notification keeps popping up after the welcome screen and I can''t login the game: "ERROR 0034 Configuration Missmatch 27688doDFy879"');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('diqw78f', 'Jessica fanclub', 000007, 'Amazing fanart found on Twitter', to_date('2020-03-03:16:33:04','YYYY-MM-DD:HH24:MI:SS'), 68, 
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('diqw78f', 'Jessica fanclub', 000007, 'Amazing fanart found on Twitter', to_date('2020-03-03:16:33:04','YYYY-MM-DD:HH24:MI:SS'), 68,
 	'Chekcout this artist @kiminodaikon on Twitter. His work is so sickkkkk');
 INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('f8hf92wd', 'Is Ubisoft bankrupt yet', 000008, 'My thoughts on the new AC update', to_date('2020-01-23:00:18:20','YYYY-MM-DD:HH24:MI:SS'), 5, 'Blablabla…');
 INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('xcvhhy93', 'FIFA is Da BEST', 000002, 'The FULLEST character analysis ever', to_date('2019-12-05:09:20:00','YYYY-MM-DD:HH24:MI:SS'), 2334, 'Blablabla…');
-INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('987dshkjg', 'Majo No Ie', 000010, 'UWU Happy new year peasants', to_date('2020-01-01:00:11:39','YYYY-MM-DD:HH24:MI:SS'), 12, 
+INSERT INTO ForumArticle_posts (ArtID, Forum, AuthorID, Title, Time, Views, Content) VALUES ('987dshkjg', 'Majo No Ie', 000001, 'UWU Happy new year peasants', to_date('2020-01-01:00:11:39','YYYY-MM-DD:HH24:MI:SS'), 12,
 	'Whassup just checking on yall guys. Happy new year folks');
+
 
 INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567','f45j', 000002, to_date('2020-01-05:00:06:29','YYYY-MM-DD:HH24:MI:SS'),
 	'Many people have been having the same bug recently, and EA said they are working on this. It is likely that they will release a patch by today. ');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567', 'd78', 000004, to_date('2020-01-05:00:08:02','YYYY-MM-DD:HH24:MI:SS'), 
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('a100z567', 'd78', 000004, to_date('2020-01-05:00:08:02','YYYY-MM-DD:HH24:MI:SS'),
 	'WTH alright. Not surprised cuz it''s EA man. ');
-INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('987dshkjg', 's45b', 000008, to_date('2020-01-01:01:11:39','YYYY-MM-DD:HH24:MI:SS'),'Y u so fast HUH?');
+INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('987dshkjg', 's45b', 000001, to_date('2020-01-01:01:11:39','YYYY-MM-DD:HH24:MI:SS'),'Y u so fast HUH?');
 INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '6823', 000003, to_date('2020-01-07:20:09:40','YYYY-MM-DD:HH24:MI:SS'),
 	'Not quite sure about point 2 anymore after this update tho. I think they changed it all up. ');
 INSERT INTO Follow_up_posts (ArtID, FID, AuthorID, Time, Content) VALUES ('xcvhhy93', '241231' , 000002, to_date('2020-01-07:22:20:17','YYYY-MM-DD:HH24:MI:SS'),
@@ -409,26 +430,18 @@ INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000009, 0805, 22, 8, 26);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (0000010, 0805, 35, 10, 26);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (0000012, 0805, 26, 10, 26);
-
-
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0200, 13, 4, 0);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0802, 4, 5, 430);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000012, 0302, 6, 6, 356);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000001, 1102, 1, 1, 26);
 
-INSERT INTO GameRecord_recordedTo VALUES (000004, 0805, to_date('2019-12-31:21:08:42','YYYY-MM-DD:HH24:MI:SS'),  to_date('2019-12-31:22:22:00','YYYY-MM-DD:HH24:MI:SS'), 1);
-INSERT INTO GameRecord_recordedTo VALUES (000004, 0805, to_date('2020-01-02:13:25:33','YYYY-MM-DD:HH24:MI:SS'),  to_date('2020-01-02:23:18:42','YYYY-MM-DD:HH24:MI:SS'), 20);
-INSERT INTO GameRecord_recordedTo VALUES (000004, 0805, to_date('2020-01-02:23:56:24','YYYY-MM-DD:HH24:MI:SS'),  to_date('2020-01-02:06:18:42','YYYY-MM-DD:HH24:MI:SS'), 5);
-
-INSERT INTO GameRecord_recordedTo VALUES (000005, 0200, to_date('2019-12-13:21:05:47','YYYY-MM-DD:HH24:MI:SS'), to_date('2019-12-13:02:03:44','YYYY-MM-DD:HH24:MI:SS'), 0);
-INSERT INTO GameRecord_recordedTo VALUES (000005, 0200, to_date('2019-12-14:14:33:28','YYYY-MM-DD:HH24:MI:SS'), to_date('2019-12-14:22:45:01','YYYY-MM-DD:HH24:MI:SS'), 0);
-
-INSERT INTO GameRecord_recordedTo VALUES (000005, 0802, to_date('2020-01-14:18:35:07','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-01-14:22:49:14','YYYY-MM-DD:HH24:MI:SS'), 430);
-
-INSERT INTO GameRecord_recordedTo VALUES (000012, 0302, to_date('2020-05-04:01:41:20','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-04:07:58:59','YYYY-MM-DD:HH24:MI:SS'), 356);
-
-INSERT INTO GameRecord_recordedTo VALUES (000001, 1102, to_date('2020-05-11:13:24:11','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-11:14:30:18','YYYY-MM-DD:HH24:MI:SS'), 26);
-
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000001, 0805, to_date('2019-12-31:21:08:42','YYYY-MM-DD:HH24:MI:SS'),  to_date('2019-12-31:22:22:00','YYYY-MM-DD:HH24:MI:SS'), 1);
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000004, 0805, to_date('2019-12-31:21:08:42','YYYY-MM-DD:HH24:MI:SS'),  to_date('2019-12-31:22:22:00','YYYY-MM-DD:HH24:MI:SS'), 1);
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, to_date('2019-12-13:21:05:47','YYYY-MM-DD:HH24:MI:SS'), to_date('2019-12-13:02:03:44','YYYY-MM-DD:HH24:MI:SS'), 0);
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0200, to_date('2019-12-14:14:33:28','YYYY-MM-DD:HH24:MI:SS'), to_date('2019-12-14:22:45:01','YYYY-MM-DD:HH24:MI:SS'), 0);
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000005, 0802, to_date('2020-01-14:18:35:07','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-01-14:22:49:14','YYYY-MM-DD:HH24:MI:SS'), 430);
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000012, 0302, to_date('2020-05-04:01:41:20','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-04:07:58:59','YYYY-MM-DD:HH24:MI:SS'), 356);
+INSERT INTO GameRecord_recordedTo (PlayerID, GID, StartTime, EndTime, Score) VALUES (000001, 1102, to_date('2020-05-11:13:24:11','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-11:14:30:18','YYYY-MM-DD:HH24:MI:SS'), 26);
 
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 0805, '31-DEC-19', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000004, 0805, '31-DEC-19', 'CreditCard');
@@ -438,7 +451,6 @@ INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) V
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000009, 0805, '31-DEC-19', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000010, 0805, '31-DEC-19', 'CreditCard');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0805, '31-DEC-19', 'CreditCard');
-
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0200, '13-DEC-19', 'PayPal');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0802, '14-JAN-20', 'PayPal');
 INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0302, '04-MAY-20', 'CreditCard');
@@ -449,11 +461,13 @@ INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000003, '1a1', '12-FEB-
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000008, '1a1', '02-SEP-18');
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000011, '1a1', '29-FEB-20');
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000012, '2s1', '04-MAY-20');
+INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000001, '1b1', '03-MAY-20');
 
-INSERT INTO associates (GID, AID) VALUES (0200, '3a2');--Speed Runner
-INSERT INTO associates (GID, AID) VALUES (0302, '2s1');--all kill
-INSERT INTO associates (GID, AID) VALUES (0301, '7f4');--king of the land
-INSERT INTO associates (GID, AID) VALUES (1101, '84r');--FOB
+INSERT INTO associates (GID, AID) VALUES (0200, '3a2');
+INSERT INTO associates (GID, AID) VALUES (0302, '2s1');
+INSERT INTO associates (GID, AID) VALUES (0301, '7f4');
+INSERT INTO associates (GID, AID) VALUES (1101, '84r');
+INSERT INTO associates (GID, AID) VALUES (0805, '1b1');
 
 INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('efe1b189-ad63-4e3e', 000004, 0805,
 	'It''s so bad that it''s good', to_date('2020-01-03:06:20:23','YYYY-MM-DD:HH24:MI:SS'));
@@ -467,13 +481,13 @@ INSERT INTO Comment_writesTo (CID, PlayerID, GID, Content, Time) VALUES ('c8a918
 	'SUB DUDE 2 POINTS 4 U', to_date('2020-05-11:14:31:44','YYYY-MM-DD:HH24:MI:SS'));
 
 INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0805, to_date('2020-01-04:12:38:56','YYYY-MM-DD:HH24:MI:SS'), 'I think so too. Thx for playing');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000002, 0200, to_date('2019-12-15:10:34:51','YYYY-MM-DD:HH24:MI:SS'), 
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000002, 0200, to_date('2019-12-15:10:34:51','YYYY-MM-DD:HH24:MI:SS'),
 	'Thank you! I have made another game of the same type but less demanding. You can check out my homepage for that!');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0802, to_date('2020-01-17:02:28:04','YYYY-MM-DD:HH24:MI:SS'), 
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000008, 0802, to_date('2020-01-17:02:28:04','YYYY-MM-DD:HH24:MI:SS'),
 	'Thx for telling me that. It''s fixed now. Enjoy. ');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000003, 0302, to_date('2020-05-04:16:30:07','YYYY-MM-DD:HH24:MI:SS'), 
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000003, 0302, to_date('2020-05-04:16:30:07','YYYY-MM-DD:HH24:MI:SS'),
 	'Well thank you very much! I put a lot more effort into designing this one than I ever did. I am currently working on the sequal and it is going to be a 3D game. I will definitely notify you when it comes out!');
-INSERT INTO replies (UserID, GID, Time, Content) VALUES (000012, 0302, to_date('2020-05-04:17:02:59','YYYY-MM-DD:HH24:MI:SS'), 
+INSERT INTO replies (UserID, GID, Time, Content) VALUES (000012, 0302, to_date('2020-05-04:17:02:59','YYYY-MM-DD:HH24:MI:SS'),
 	'WOW bring the work on man. Looking forward to that. ');
 
 INSERT INTO favorites (UserID, Type) VALUES (000001, 'Action');
@@ -505,8 +519,8 @@ INSERT INTO isOf (GID, Type) VALUES (1101, 'Simulation');
 INSERT INTO isOf (GID, Type) VALUES (1102, 'Crafting');
 INSERT INTO isOf (GID, Type) VALUES (1103, 'Simulation');
 
--- INSERT INTO mentions (ArtID, GID) VALUES ('diqw78f', 0807);
--- INSERT INTO mentions (ArtID, GID) VALUES ('987dshkjg', 0302);
+INSERT INTO mentions (ArtID, GID) VALUES ('diqw78f', 0807);
+INSERT INTO mentions (ArtID, GID) VALUES ('987dshkjg', 0302);
 
 CREATE SEQUENCE GID_generate
 	START WITH 20000
