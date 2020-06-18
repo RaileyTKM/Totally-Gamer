@@ -297,9 +297,10 @@ $(function(){
 		// Fetch data
 
         while ($row = OCI_Fetch_Array($stid, OCI_BOTH)) {
-            echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" . $row[3] . "</td><td>" . $row[4] 
-            . "</td></tr>"; //or just use "echo $row[0]" 
-            // echo $row[0];
+			echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . 
+			"</td><td>" . $row[3] . '</td>
+			<td><input type="number" name="rate" min="1" max="5"  value="'. $row[4] .'"></td></tr>'; 
+
         }
 		// Store userid to server and pass to next page
 		echo "</table>";

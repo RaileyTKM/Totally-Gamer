@@ -44,7 +44,7 @@ CREATE TABLE Developer (
 
 CREATE TABLE Player (
 	ID	INT	PRIMARY KEY ,
-	FOREIGN KEY (ID) REFERENCES UserID (ID) 
+	FOREIGN KEY (ID) REFERENCES UserID (ID)
 );
 
 CREATE TABLE Game_uploads (
@@ -247,11 +247,14 @@ INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role)
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000010, 'Balnaves', 'Le5625', 'Female', '11-NOV-91', '21-OCT-19', 'Player');
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000011, 'Maestrini', 'Le2345', 'Female', '21-JUL-94', '27-FEB-20', 'Developer');
 INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000012, 'Mario', 'SmashBro', 'Male', '03-MAR-93', '11-MAY-19', 'Player');
+INSERT INTO UserID (ID, Nickname, Password, Gender, Birthday, AccCreation, Role) VALUES (000033, 'io', 'SmaBro', 'Male', '13-MAR-93', '10-MAY-19', 'Developer');
+
 
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000002, 2, 5, 47.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000003, 1, 3, 2.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000008, 2, 7, 149.00);
 INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000011, 1, 4, 0.00);
+INSERT INTO Developer (ID, YearsOfExp, TPurchase, TProfit) VALUES (000033, 1, 4, 0.00);
 
 INSERT INTO Player (ID) VALUES (000001);
 INSERT INTO Player (ID) VALUES (000004);
@@ -378,7 +381,15 @@ INSERT INTO isFriend (User1ID, User2ID) VALUES (000004, 000005);
 INSERT INTO isFriend (User1ID, User2ID) VALUES (000004, 000006);
 INSERT INTO isFriend (User1ID, User2ID) VALUES (000002, 000007);
 
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (000001, 0805, 1);
 INSERT INTO rates (PlayerID, GID, Rating) VALUES (000004, 0805, 1);
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (000005, 0805, 1);
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (000006, 0805, 1);
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (000007, 0805, 1);
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (000009, 0805, 1);
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (0000010, 0805, 1);
+INSERT INTO rates (PlayerID, GID, Rating) VALUES (0000012, 0805, 1);
+
 INSERT INTO rates (PlayerID, GID, Rating) VALUES (000005, 0200, 4);
 INSERT INTO rates (PlayerID, GID, Rating) VALUES (000005, 0802, 3);
 INSERT INTO rates (PlayerID, GID, Rating) VALUES (000012, 0302, 4);
@@ -390,7 +401,16 @@ INSERT INTO views (PlayerID, GID, Time) VALUES (000005, 0802, to_date('2020-01-1
 INSERT INTO views (PlayerID, GID, Time) VALUES (000012, 0302, to_date('2020-05-04:01:35:25','YYYY-MM-DD:HH24:MI:SS'));
 INSERT INTO views (PlayerID, GID, Time) VALUES (000001, 1102, to_date('2020-05-11:13:21:24','YYYY-MM-DD:HH24:MI:SS'));
 
-INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000004, 0805, 17, 1, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000001, 0805, 23, 3, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000004, 0805, 11, 1, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0805, 45, 4, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000006, 0805, 34, 6, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000007, 0805, 13, 3, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000009, 0805, 22, 8, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (0000010, 0805, 35, 10, 26);
+INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (0000012, 0805, 26, 10, 26);
+
+
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0200, 13, 4, 0);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000005, 0802, 4, 5, 430);
 INSERT INTO plays (PlayerID, GID, AccumPlayTime, CurrStage, AccumScore) VALUES (000012, 0302, 6, 6, 356);
@@ -409,11 +429,20 @@ INSERT INTO GameRecord_recordedTo VALUES (000012, 0302, to_date('2020-05-04:01:4
 
 INSERT INTO GameRecord_recordedTo VALUES (000001, 1102, to_date('2020-05-11:13:24:11','YYYY-MM-DD:HH24:MI:SS'), to_date('2020-05-11:14:30:18','YYYY-MM-DD:HH24:MI:SS'), 26);
 
-INSERT INTO Purchases_profits_detail VALUES (000004, 0805, '31-DEC-19', 'CreditCard');
-INSERT INTO Purchases_profits_detail VALUES (000005, 0200, '13-DEC-19', 'PayPal');
-INSERT INTO Purchases_profits_detail VALUES (000005, 0802, '14-JAN-20', 'PayPal');
-INSERT INTO Purchases_profits_detail VALUES (000012, 0302, '04-MAY-20', 'CreditCard');
-INSERT INTO Purchases_profits_detail VALUES (000001, 1102, '11-MAY-20', 'DebitCard');
+
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000004, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000006, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000007, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000009, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000010, 0805, '31-DEC-19', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0805, '31-DEC-19', 'CreditCard');
+
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0200, '13-DEC-19', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000005, 0802, '14-JAN-20', 'PayPal');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000012, 0302, '04-MAY-20', 'CreditCard');
+INSERT INTO Purchases_profits_detail (PlayerID, GID, Purchase_Date, PayMethod) VALUES (000001, 1102, '11-MAY-20', 'DebitCard');
 
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000002, '1a1', '19-SEP-19');
 INSERT INTO achieves (UserID, AID, Achieve_Date) VALUES (000003, '1a1', '12-FEB-19');
