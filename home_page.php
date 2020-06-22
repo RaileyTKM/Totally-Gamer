@@ -2,107 +2,154 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" content="width=device-width, initial-scale=1">
-    <title>Project</title>
+	<title>Home</title>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<link rel="stylesheet" href="navStyle.css">
 	<style>
-	html {
-		background: url(UBC.jpg) no-repeat center center fixed;
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
-	}
-	ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: #333;
-	}
-
-	li {
-	float: left;
-	}
-
-	li a, .dropbtn {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-	}
-
-	li a:hover, .dropdown:hover .dropbtn {
-	background-color: skyblue;
-	}
-
-	li.dropdown {
-	display: inline-block;
-	}
-
-	.dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-	right: 0;
-	}
-
-	.dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-	text-align: left;
-	}
-
-	.dropdown-content a:hover {background-color: #f1f1f1;}
-
-	.dropdown:hover .dropdown-content {
-	display: block;
-	}
-	.header{
-    margin-top: 1%;
-    font-size: 400%;
-    text-align: center;
-	}
+		html {
+			background: url(UBC.jpg) no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+		body {
+		text-align: center;
+		}
+		table { display: inline-block; text-align: left; font-size:20px; }
+		.header{
+		margin-top: 1%;
+		font-size: 400%;
+		text-align: center;
+		margin-bottom: 3%;
+		}
+		.tname{
+			margin : 1%;
+			text-align: center;
+			font-size: 200%;
+		}
+		.tbody{
+			margin : 0%;
+			text-align: center;
+			font-size: 120%;
+			color: #111542;
+		}
+		table, th, td {
+		border: 1px solid black;
+		}
 	</style>
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper">
-        <ul>
-            <li><a href="https://www.students.cs.ubc.ca/~zpengwei/home_page.php">Home</a></li>
-			<li><a href="https://www.students.cs.ubc.ca/~zpengwei/game_page.php">Game</a></li>
-			<li><a href="https://www.students.cs.ubc.ca/~zpengwei/forum_page.php">Forum</a></li>
-			<li><a href="https://www.students.cs.ubc.ca/~zpengwei/article_page.php">Article</a></li>
-			<li><a href="https://www.students.cs.ubc.ca/~zpengwei/about_page.php">About</a></li>
-			<li class="dropdown" style="float:right">
-				<a class="dropbtn">My Account</a>
-				<div class="dropdown-content">
-				<a href="https://www.students.cs.ubc.ca/~zpengwei/mySetting_page.php">Setting</a>
-				<a href="https://www.students.cs.ubc.ca/~zpengwei/myFriend_page.php">Friend</a>
-				<!-- TODO: My game has Game Record and Achievement in it -->
-				<a href="https://www.students.cs.ubc.ca/~zpengwei/myGame_page.php">Game Owned</a> 
-				<a href="https://www.students.cs.ubc.ca/~zpengwei/myFollowUp_page.php">FollowUp</a>
-				<a href="https://www.students.cs.ubc.ca/~zpengwei/myArticle_page.php">My Article</a>
-				<a href="https://www.students.cs.ubc.ca/~zpengwei/myForum_page.php">My Forum</a>
-				</div>
-			</li>
+<!--Navigation bar-->
+<div id="nav-placeholder">
 
-        </ul>
-    </div>
-</nav>
-<div class="header">Welcome to</div>
-<div class="header">Totally Gamer</div>
+</div>
+
+<script>
+$(function(){
+  $("#nav-placeholder").load("navbar.html");
+});
+</script>
+<!--end of Navigation bar-->
 <?php
 	//extract userid from login page
     session_save_path("/tmp");
 	session_start();
-	echo "Hello world!<br>";
-	echo $_SESSION['userid']; // green
+	?>
 
-    ?>
+<div class="header">Hello  <?php echo $_SESSION['userName'];?> </div>
+<div class="header">Welcome to Totally Gamer</div>
+
+<h1>Popular Games</h1>
+<div class="tbody">These games are purchased by EVERY player</div>
+<?php
+	$conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
+	if (!$conn) {
+		$e = oci_error();   // For oci_connect errors do not pass a handle
+		debug_to_console("Database is NOT Connected");
+		trigger_error(htmlentities($e['message']), E_USER_ERROR);
+	}
+	debug_to_console("Database is Connected");
+
+	$sql = "SELECT g.Name
+	FROM Game_uploads g
+	WHERE NOT EXISTS
+		(SELECT * FROM Player u
+		WHERE NOT EXISTS
+		(SELECT p.GID 
+		FROM Purchases_profits_detail p
+		WHERE p.GID = g.GID AND p.PlayerID = u.ID))";
+
+
+	$std = oci_parse($conn, $sql);
+
+	// Execute sql
+	$r = oci_execute($std, OCI_DEFAULT);
+
+	if (!$r) {
+
+	$e = oci_error($std);
+	debug_to_console($e);
+	trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+	}
+
+	// Fetch data
+	while ($row = OCI_Fetch_Array($std, OCI_BOTH)) {
+		echo "<table>";
+		echo "<tr><th>".$row[0]."</th></tr>"; 
+		echo "</table>";
+	}
+	oci_free_statement($std);
+
+
+	function debug_to_console($data) {
+		$output = $data;
+		if (is_array($output))
+			$output = implode(',', $output);
+
+		echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+	}
+?>
+
+<h1>Our Game Statistics</h1>
+<div class="tbody">Average playtime for each game</div>
+<?php
+    $sql = "SELECT Name, Rating, Price, a
+				FROM Game_uploads g
+				INNER JOIN
+					(SELECT GID, AVG(AccumPlayTime) a
+						FROM plays 
+						GROUP BY GID) t
+				ON g.GID=t.GID
+				ORDER BY a DESC";
+
+
+    $std = oci_parse($conn, $sql);
+
+    // Execute sql
+    $r = oci_execute($std, OCI_DEFAULT);
+
+    if (!$r) {
+
+        $e = oci_error($std);
+        debug_to_console($e);
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+    }
+
+    echo "<table>";
+    echo "<tr><th>Game</th><th>Rating</th><th>Price/CA$</th><th>Average Playtime/hr</th></tr>";    
+    // Fetch data
+    while ($row = OCI_Fetch_Array($std, OCI_BOTH)) {
+        echo "<tr><td>" . $row[0] . "</td><td>" . $row[1] . "</td><td>" . $row[2] . "</td><td>" .$row[3]. '</td></tr>';
+    }
+    // Store userid to server and pass to next page
+    echo "</table>";
+
+    oci_free_statement($std);
+
+
+?>
+
+
 </body>
 </html>

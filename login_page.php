@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" content="width=device-width, initial-scale=1">
-    <title>Project</title>
+    <title>Login</title>
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
@@ -11,15 +11,21 @@
     <form method="post">
         <input type="text" name="username" placeholder="Username" required="required" />
         <input type="password" name="password" placeholder="Password" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large">Let me in.</button>
+        <button type="submit" name="login" class="btn btn-primary btn-block btn-large">Sign in</button>
     </form>
     <?php
 
         session_save_path("/tmp");
         session_start();
+        
+        if (isset($_SESSION['userid'])) {
+            $error = "You have already logged in";
+            echo "<script type='text/javascript'>alert('$error');</script>";
+            echo "<script type='text/javascript'>window.location.replace('home_page.php');</script>";
+        }
 
-        if(isset($_POST['username'])&&isset($_POST['password'])){
-                $conn = OCILogon("ora_reyred", "a74388869", "dbhost.students.cs.ubc.ca:1522/stu");
+        if(isset($_POST['login'])){
+                $conn = OCILogon("ora_zpengwei", "a73569758", "dbhost.students.cs.ubc.ca:1522/stu");
                 if (!$conn) {
                     $e = oci_error();   // For oci_connect errors do not pass a handle
                     debug_to_console("Database is NOT Connected");
@@ -29,7 +35,7 @@
 
                     // Parse sql
 
-                    $stid = oci_parse($conn, 'SELECT ID , Role FROM UserID WHERE Nickname = :username AND Password = :password');
+                    $stid = oci_parse($conn, 'SELECT * FROM UserID WHERE Nickname = :username AND Password = :password');
 
                     $username = $_POST['username'];
                     // echo $username;
@@ -66,15 +72,22 @@
                     // Fetch data
                     $row = OCI_Fetch_Array($stid, OCI_BOTH);
                     $id = $row[0];
-                    $role = $row[1];
-
                     if($id){ // TODO: player page and developer page
-
+                    $nickname = $row[1];
+                    $gender = $row[3];
+                    $birthday = $row[4];
+                    $accCreation = $row[5];
+                    $role = $row[6];
                     // Store userid to server and pass to next page
                     $_SESSION['userid'] = $id;
+                    $_SESSION['userName'] = $nickname;
+                    $_SESSION['userGender'] = $gender;
+                    $_SESSION['userBirthday'] = $birthday;
+                    $_SESSION['userAccCreation'] = $accCreation;
+                    $_SESSION['userRole'] = $role;
                     oci_free_statement($stid);
                     OCILogoff($conn);
-                    header('Location: https://www.students.cs.ubc.ca/~zpengwei/home_page.php');
+                    header('Location: home_page.php');
                     }else{
                         $message = "Wrong Username/Password";
                         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -82,14 +95,14 @@
             }
 
 
-
+        
 
 
         function debug_to_console($data) {
             $output = $data;
             if (is_array($output))
                 $output = implode(',', $output);
-
+        
             echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
         }
 
@@ -97,7 +110,7 @@
 
     ?>
 
-
+    
 </div>
 </body>
 </html>
